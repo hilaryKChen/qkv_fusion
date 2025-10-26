@@ -85,7 +85,7 @@ def qkv_fused_forward_optimized(
     num_q_heads: int = 32,
     num_kv_heads: int = 4,
     head_dim: int = 128,
-) -> Tuple[torch::Tensor, torch.Tensor, torch.Tensor]:
+) :
     """
     Optimized fused QKV projection using FasterTransformer approach.
     

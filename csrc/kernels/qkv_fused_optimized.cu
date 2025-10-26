@@ -5,20 +5,22 @@
  * 2. Fused split + bias + transpose kernel
  ******************************************************************************/
 
+#include <cstdio>
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
+#include <cublas_v2.h>
 
 // CUTLASS includes for optimized GEMM
-#include <cute/tensor.hpp>
-#include <cutlass/cutlass.h>
-#include <cutlass/numeric_types.h>
-#include <cutlass/gemm/device/gemm.h>
+// #include <cute/tensor.hpp>
+// #include <cutlass/cutlass.h>
+// #include <cutlass/numeric_types.h>
+// #include <cutlass/gemm/device/gemm.h>
 
 #include "../qkv_fused_params.h"
 
 namespace qkv_fusion {
 
-using namespace cute;
+// using namespace cute;
 
 /******************************************************************************
  * Kernel 1: Fused QKV GEMM using CUTLASS

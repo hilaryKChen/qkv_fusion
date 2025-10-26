@@ -6,6 +6,7 @@
  * This is a placeholder for Phase 3 of the project
  ******************************************************************************/
 
+#include <cstdio>
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
 

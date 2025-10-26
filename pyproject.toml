@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools", "wheel", "torch"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qkv_fusion"
+version = "0.0.0"
+description = "Fused QKV projection CUDA kernels for transformer attention"
+requires-python = ">=3.8"
+dependencies = [
+    "torch",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+

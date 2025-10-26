@@ -3,20 +3,21 @@
  * Phase 1: Simple baseline using CUTLASS GEMM
  ******************************************************************************/
 
+#include <cstdio>
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
 
 // CUTLASS includes
-#include <cute/tensor.hpp>
-#include <cutlass/cutlass.h>
-#include <cutlass/numeric_types.h>
-#include <cutlass/gemm/device/gemm.h>
+// #include <cute/tensor.hpp>
+// #include <cutlass/cutlass.h>
+// #include <cutlass/numeric_types.h>
+// #include <cutlass/gemm/device/gemm.h>
 
 #include "../qkv_fused_params.h"
 
 namespace qkv_fusion {
 
-using namespace cute;
+// using namespace cute;
 
 // Simple kernel that does Q, K, V projections sequentially
 // This is Phase 1 - not yet optimized, but correct
