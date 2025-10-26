@@ -217,16 +217,15 @@
      
      // Total output dimension: Q + K + V
      const int qkv_output_dim = (num_q_heads + 2 * num_kv_heads) * head_dim;
-     const int token_num = batch_size * seq_len;
-     const int M = token_num;
-     const int N = qkv_output_dim;
-     const int K = hidden_dim;
-     
-     // Allocate intermediate buffer for fused QKV output
-     half* qkv_buf;
-     cudaMalloc(&qkv_buf, M * N * sizeof(half));
-     
-     // Step 1: Single GEMM for all Q, K, V projections
+    const int token_num = batch_size * seq_len;
+    const int M = token_num;
+    const int N = qkv_output_dim;
+    const int K = hidden_dim;
+    
+    // Use pre-allocated workspace (no cudaMalloc overhead!)
+    half* qkv_buf = reinterpret_cast<half*>(params.workspace_ptr);
+
+    // Step 1: Single GEMM for all Q, K, V projections
      // hidden_states [M, K] @ qkv_weight [K, N] = qkv_buf [M, N]
      // where M = batch_size * seq_len
      //       K = hidden_dim
@@ -258,13 +257,12 @@
          seq_len,
          num_q_heads,
          num_kv_heads,
-         head_dim
-     );
-     
-     // Free intermediate buffer
-     cudaFree(qkv_buf);
-     
-     // Check for errors
+        head_dim
+    );
+
+    // No cudaFree needed - workspace is managed by PyTorch!
+    
+    // Check for errors
      cudaError_t err = cudaGetLastError();
      if (err != cudaSuccess) {
          printf("CUDA kernel error: %s\n", cudaGetErrorString(err));

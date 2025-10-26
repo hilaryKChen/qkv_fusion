@@ -35,6 +35,9 @@ struct QKVFusedParams {
     void *__restrict__ k_out_ptr;     // [batch, num_kv_heads, seqlen, head_dim]
     void *__restrict__ v_out_ptr;     // [batch, num_kv_heads, seqlen, head_dim]
     
+    // Workspace buffer (pre-allocated by PyTorch)
+    void *__restrict__ workspace_ptr;  // [batch * seqlen, qkv_out_dim]
+    
     // Strides for hidden states
     index_t hidden_batch_stride;
     index_t hidden_row_stride;

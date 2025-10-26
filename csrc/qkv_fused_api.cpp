@@ -197,6 +197,12 @@ std::vector<torch::Tensor> qkv_fused_forward_optimized(
     params.has_bias = qkv_fused_bias.has_value();
     params.is_quantized = false;
     
+    // Allocate workspace buffer (managed by PyTorch, no manual cudaMalloc/Free!)
+    const int M = batch_size * seqlen;
+    const int N = qkv_out_dim;
+    auto workspace = torch::empty({M, N}, options);  // PyTorch manages this memory
+    params.workspace_ptr = workspace.data_ptr();
+    
     // Get CUDA stream and cuBLAS handle
     at::cuda::CUDAGuard device_guard(hidden_states.device());
     cudaStream_t stream = at::cuda::getCurrentCUDAStream();
