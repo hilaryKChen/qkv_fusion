@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyTorch
+*.pth
+*.pt
+*.ckpt
+
+# CUDA
+*.o
+*.a
+*.so
+*.dylib
+
+# Build artifacts
+*.out
+*.log
+compile.log
+error.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation (exclude from repo)
+*.md
+!README.md
+INTERFACE_GUIDE.md
+IMPLEMENTATION_NOTES.md
+ARCHITECTURE_DIAGRAM.md
+FASTERTRANSFORMER_OPTIMIZATION_GUIDE.md
+OPTIMIZATION_ROADMAP.md
+CUTBLASS_IMPLEMENTATION_SUMMARY.md
+
+# Test results
+test_results.txt
+system_info.txt
+*.nsys-rep
+qkv_profile.*
+
+# Temporary files
+*.tmp
+*.bak
+.cache/
+
+# Virtual environment
+venv/
+env/
+ENV/
+

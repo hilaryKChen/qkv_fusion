@@ -1,0 +1,32 @@
+# Include essential files
+include README.md
+include LICENSE
+include setup.py
+
+# Include source code
+recursive-include qkv_fusion *.py
+recursive-include csrc *.cpp *.cu *.h *.cuh
+
+# Include examples
+recursive-include examples *.py
+
+# Include tests
+include test_optimized.py
+include test_qkv_fusion.py
+
+# Exclude documentation
+exclude *.md
+exclude INTERFACE_GUIDE.md
+exclude IMPLEMENTATION_NOTES.md
+exclude ARCHITECTURE_DIAGRAM.md
+exclude FASTERTRANSFORMER_OPTIMIZATION_GUIDE.md
+exclude OPTIMIZATION_ROADMAP.md
+exclude CUTBLASS_IMPLEMENTATION_SUMMARY.md
+recursive-exclude test_guide *
+
+# Exclude build artifacts
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude *.so
+global-exclude .DS_Store
+
