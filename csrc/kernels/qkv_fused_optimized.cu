@@ -38,61 +38,59 @@
  #include <cublas_v2.h>
  #include <cuda_fp16.h>
  
- // CUTLASS GEMM implementation using tensor cores
- void launch_fused_qkv_gemm_cutlass(
-     const half* hidden_states,      // [M, K]
-     const half* qkv_weight,         // [K, N]
-     half* qkv_buf,                  // [M, N]
-     int M,                          // batch_size * seq_len
-     int N,                          // qkv_output_dim
-     int K,                          // hidden_dim
-     cublasHandle_t cublas_handle,
-     cudaStream_t stream
- ) {
-     // Use cuBLAS for now (CUTLASS integration can be done later for more control)
-     // cuBLAS is highly optimized and uses tensor cores automatically
-     
-     const half alpha = __float2half(1.0f);
-     const half beta = __float2half(0.0f);
-     
-     // Set stream for cuBLAS
-     cublasSetStream(cublas_handle, stream);
-     
-     // Matrix multiplication: C = alpha * A * B + beta * C
-     // A = hidden_states [M, K]
-     // B = qkv_weight [K, N]
-     // C = qkv_buf [M, N]
-     //
-     // cuBLAS uses column-major, so we need to transpose:
-     // C^T = alpha * B^T * A^T + beta * C^T
-     // which is: [N, M] = [N, K] * [K, M]
-     
-     cublasStatus_t status = cublasGemmEx(
-         cublas_handle,
-         CUBLAS_OP_N,        // B^T is not transposed (B is already in column-major)
-         CUBLAS_OP_N,        // A^T is not transposed (A is already in column-major)
-         N,                  // rows of B^T (columns of B)
-         M,                  // columns of A^T (rows of A)
-         K,                  // columns of B^T (rows of B) = rows of A^T (columns of A)
-         &alpha,
-         qkv_weight,         // B in column-major
-         CUDA_R_16F,         // data type
-         N,                  // leading dimension of B
-         hidden_states,      // A in column-major
-         CUDA_R_16F,         // data type
-         K,                  // leading dimension of A
-         &beta,
-         qkv_buf,            // C in column-major
-         CUDA_R_16F,         // data type
-         N,                  // leading dimension of C
-         CUBLAS_COMPUTE_16F, // compute type (uses tensor cores on Ampere+)
-         CUBLAS_GEMM_DEFAULT_TENSOR_OP  // algorithm (tensor core enabled)
-     );
-     
-     if (status != CUBLAS_STATUS_SUCCESS) {
-         printf("cuBLAS GEMM failed with status: %d\n", status);
-     }
- }
+// Optimized GEMM using cuBLAS with proper row-major handling
+void launch_fused_qkv_gemm_cutlass(
+    const half* hidden_states,      // [M, K] row-major
+    const half* qkv_weight,         // [K, N] row-major
+    half* qkv_buf,                  // [M, N] row-major
+    int M,                          // batch_size * seq_len
+    int N,                          // qkv_output_dim
+    int K,                          // hidden_dim
+    cublasHandle_t cublas_handle,
+    cudaStream_t stream
+) {
+    const half alpha = __float2half(1.0f);
+    const half beta = __float2half(0.0f);
+    
+    cublasSetStream(cublas_handle, stream);
+    
+    // Row-major C = A @ B becomes column-major C^T = B^T @ A^T
+    // We want: qkv_buf[M, N] = hidden_states[M, K] @ qkv_weight[K, N]
+    // In column-major view: qkv_buf^T[N, M] = qkv_weight^T[N, K] @ hidden_states^T[K, M]
+    //
+    // cuBLAS call: C = alpha * op(A) * op(B) + beta * C
+    // where A = qkv_weight^T, B = hidden_states^T, C = qkv_buf^T
+    //
+    // Since our data is row-major, we interpret it as transposed column-major:
+    // - qkv_weight[K, N] row-major = qkv_weight^T[N, K] column-major
+    // - hidden_states[M, K] row-major = hidden_states^T[K, M] column-major
+    
+    cublasStatus_t status = cublasGemmEx(
+        cublas_handle,
+        CUBLAS_OP_N,        // Don't transpose qkv_weight^T (already transposed by row-major)
+        CUBLAS_OP_N,        // Don't transpose hidden_states^T (already transposed by row-major)
+        N,                  // Rows of qkv_weight^T[N, K]
+        M,                  // Columns of hidden_states^T[K, M]
+        K,                  // Inner dimension
+        &alpha,
+        qkv_weight,         // First matrix: qkv_weight^T[N, K] in column-major view
+        CUDA_R_16F,
+        N,                  // Leading dimension (rows in column-major = N)
+        hidden_states,      // Second matrix: hidden_states^T[K, M] in column-major view
+        CUDA_R_16F,
+        K,                  // Leading dimension (rows in column-major = K)
+        &beta,
+        qkv_buf,            // Output: qkv_buf^T[N, M] in column-major view
+        CUDA_R_16F,
+        N,                  // Leading dimension (rows in column-major = N)
+        CUBLAS_COMPUTE_16F,
+        CUBLAS_GEMM_DEFAULT_TENSOR_OP
+    );
+    
+    if (status != CUBLAS_STATUS_SUCCESS) {
+        printf("cuBLAS GEMM failed with status: %d\n", status);
+    }
+}
  
 /******************************************************************************
  * Kernel 2: Split QKV + Add Bias + Transpose (Optimized)
