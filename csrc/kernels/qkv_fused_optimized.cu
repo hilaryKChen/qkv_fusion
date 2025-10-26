@@ -94,110 +94,93 @@
      }
  }
  
- /******************************************************************************
-  * Kernel 2: Split QKV + Add Bias + Transpose
-  * Based on FasterTransformer's add_fusedQKV_bias_transpose_kernel
-  * 
-  * Input:  qkv_buf [batch * seq_len, (num_q_heads + 2*num_kv_heads) * head_dim]
-  * Output: q_out [batch, num_q_heads, seq_len, head_dim]
-  *         k_out [batch, num_kv_heads, seq_len, head_dim]
-  *         v_out [batch, num_kv_heads, seq_len, head_dim]
-  ******************************************************************************/
- 
- template<typename T>
- __global__ void split_qkv_bias_transpose_kernel(
-     T* __restrict__ q_out,
-     T* __restrict__ k_out,
-     T* __restrict__ v_out,
-     const T* __restrict__ qkv_buf,
-     const T* __restrict__ qkv_bias,  // Concatenated [q_bias, k_bias, v_bias]
-     const int batch_size,
-     const int seq_len,
-     const int num_q_heads,
-     const int num_kv_heads,
-     const int head_dim
- ) {
-     // Total tokens
-     const int token_num = batch_size * seq_len;
-     
-     // Dimensions
-     const int q_size = num_q_heads * head_dim;
-     const int kv_size = num_kv_heads * head_dim;
-     const int qkv_total_size = q_size + 2 * kv_size;  // Q + K + V
-     
-     // Each thread processes one element
-     for (int index = blockIdx.x * blockDim.x + threadIdx.x; 
-          index < token_num * qkv_total_size; 
-          index += gridDim.x * blockDim.x) {
-         
-         // Decode indices
-         const int token_idx = index / qkv_total_size;
-         const int inner_idx = index % qkv_total_size;
-         
-         // Determine which component (Q, K, or V)
-         int qkv_id;        // 0=Q, 1=K, 2=V
-         int head_id;
-         int size_id;       // Position within head
-         int bias_offset;
-         
-         if (inner_idx < q_size) {
-             // Q component
-             qkv_id = 0;
-             head_id = inner_idx / head_dim;
-             size_id = inner_idx % head_dim;
-             bias_offset = inner_idx;
-         } else if (inner_idx < q_size + kv_size) {
-             // K component
-             qkv_id = 1;
-             const int k_offset = inner_idx - q_size;
-             head_id = k_offset / head_dim;
-             size_id = k_offset % head_dim;
-             bias_offset = q_size + k_offset;
-         } else {
-             // V component
-             qkv_id = 2;
-             const int v_offset = inner_idx - q_size - kv_size;
-             head_id = v_offset / head_dim;
-             size_id = v_offset % head_dim;
-             bias_offset = q_size + kv_size + v_offset;
-         }
-         
-         // Load value and add bias
-         T val = qkv_buf[index];
-         if (qkv_bias != nullptr) {
-             val = __hadd(val, qkv_bias[bias_offset]);
-         }
-         
-         // Compute target position in output
-         const int batch_id = token_idx / seq_len;
-         const int seq_id = token_idx % seq_len;
-         
-         // Write to appropriate output buffer with transposed layout
-         // Target layout: [batch, head, seq_len, head_dim]
-         if (qkv_id == 0) {
-             // Q output
-             const int out_idx = batch_id * num_q_heads * seq_len * head_dim +
-                                head_id * seq_len * head_dim +
-                                seq_id * head_dim +
-                                size_id;
-             q_out[out_idx] = val;
-         } else if (qkv_id == 1) {
-             // K output
-             const int out_idx = batch_id * num_kv_heads * seq_len * head_dim +
-                                head_id * seq_len * head_dim +
-                                seq_id * head_dim +
-                                size_id;
-             k_out[out_idx] = val;
-         } else {
-             // V output
-             const int out_idx = batch_id * num_kv_heads * seq_len * head_dim +
-                                head_id * seq_len * head_dim +
-                                seq_id * head_dim +
-                                size_id;
-             v_out[out_idx] = val;
-         }
-     }
- }
+/******************************************************************************
+ * Kernel 2: Split QKV + Add Bias + Transpose (Optimized)
+ * 
+ * Optimization: Process in chunks to improve memory coalescing and reduce branching
+ * 
+ * Input:  qkv_buf [batch * seq_len, (num_q_heads + 2*num_kv_heads) * head_dim]
+ * Output: q_out [batch, num_q_heads, seq_len, head_dim]
+ *         k_out [batch, num_kv_heads, seq_len, head_dim]
+ *         v_out [batch, num_kv_heads, seq_len, head_dim]
+ ******************************************************************************/
+
+template<typename T>
+__global__ void split_qkv_bias_transpose_kernel_optimized(
+    T* __restrict__ q_out,
+    T* __restrict__ k_out,
+    T* __restrict__ v_out,
+    const T* __restrict__ qkv_buf,
+    const T* __restrict__ qkv_bias,
+    const int batch_size,
+    const int seq_len,
+    const int num_q_heads,
+    const int num_kv_heads,
+    const int head_dim
+) {
+    const int token_num = batch_size * seq_len;
+    const int q_size = num_q_heads * head_dim;
+    const int kv_size = num_kv_heads * head_dim;
+    
+    // Grid-stride loop over tokens
+    for (int token_idx = blockIdx.x; token_idx < token_num; token_idx += gridDim.x) {
+        const int batch_id = token_idx / seq_len;
+        const int seq_id = token_idx % seq_len;
+        
+        const T* qkv_row = qkv_buf + token_idx * (q_size + 2 * kv_size);
+        
+        // Process Q (coalesced access within warp)
+        for (int i = threadIdx.x; i < q_size; i += blockDim.x) {
+            const int head_id = i / head_dim;
+            const int dim_id = i % head_dim;
+            
+            T val = qkv_row[i];
+            if (qkv_bias != nullptr) {
+                val = __hadd(val, qkv_bias[i]);
+            }
+            
+            const int out_idx = batch_id * num_q_heads * seq_len * head_dim +
+                               head_id * seq_len * head_dim +
+                               seq_id * head_dim +
+                               dim_id;
+            q_out[out_idx] = val;
+        }
+        
+        // Process K
+        for (int i = threadIdx.x; i < kv_size; i += blockDim.x) {
+            const int head_id = i / head_dim;
+            const int dim_id = i % head_dim;
+            
+            T val = qkv_row[q_size + i];
+            if (qkv_bias != nullptr) {
+                val = __hadd(val, qkv_bias[q_size + i]);
+            }
+            
+            const int out_idx = batch_id * num_kv_heads * seq_len * head_dim +
+                               head_id * seq_len * head_dim +
+                               seq_id * head_dim +
+                               dim_id;
+            k_out[out_idx] = val;
+        }
+        
+        // Process V
+        for (int i = threadIdx.x; i < kv_size; i += blockDim.x) {
+            const int head_id = i / head_dim;
+            const int dim_id = i % head_dim;
+            
+            T val = qkv_row[q_size + kv_size + i];
+            if (qkv_bias != nullptr) {
+                val = __hadd(val, qkv_bias[q_size + kv_size + i]);
+            }
+            
+            const int out_idx = batch_id * num_kv_heads * seq_len * head_dim +
+                               head_id * seq_len * head_dim +
+                               seq_id * head_dim +
+                               dim_id;
+            v_out[out_idx] = val;
+        }
+    }
+}
  
  /******************************************************************************
   * Host function: Orchestrates the two-kernel approach
@@ -242,21 +225,21 @@
          stream
      );
      
-     // Step 2: Split QKV + Add Bias + Transpose
-     // This kernel splits the fused QKV buffer and transposes to final layout
-     const int threads = 256;
-     const int blocks = (token_num * qkv_output_dim + threads - 1) / threads;
-     
-     split_qkv_bias_transpose_kernel<half><<<blocks, threads, 0, stream>>>(
-         reinterpret_cast<half*>(params.q_out_ptr),
-         reinterpret_cast<half*>(params.k_out_ptr),
-         reinterpret_cast<half*>(params.v_out_ptr),
-         qkv_buf,
-         params.has_bias ? reinterpret_cast<const half*>(params.qkv_fused_bias_ptr) : nullptr,
-         batch_size,
-         seq_len,
-         num_q_heads,
-         num_kv_heads,
+    // Step 2: Split QKV + Add Bias + Transpose (Optimized)
+    // Use optimized kernel with better memory coalescing
+    const int threads = 256;
+    const int blocks = min(token_num, 512);  // Limit blocks for better occupancy
+    
+    split_qkv_bias_transpose_kernel_optimized<half><<<blocks, threads, 0, stream>>>(
+        reinterpret_cast<half*>(params.q_out_ptr),
+        reinterpret_cast<half*>(params.k_out_ptr),
+        reinterpret_cast<half*>(params.v_out_ptr),
+        qkv_buf,
+        params.has_bias ? reinterpret_cast<const half*>(params.qkv_fused_bias_ptr) : nullptr,
+        batch_size,
+        seq_len,
+        num_q_heads,
+        num_kv_heads,
         head_dim
     );
 
