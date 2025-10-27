@@ -48,16 +48,18 @@ void launch_fused_qkv_gemm_cutlass(
     cublasLtHandle_t cublaslt_handle,
     cudaStream_t stream
 ) {
-    const half alpha = __float2half(1.0f);
-    const half beta = __float2half(0.0f);
+    const float alpha = 1.0f;
+    const float beta = 0.0f;
     
     // Create matrix multiplication descriptor
     cublasLtMatmulDesc_t matmulDesc;
-    cublasLtMatmulDescCreate(&matmulDesc, CUBLAS_COMPUTE_16F, CUDA_R_16F);
+    cublasLtMatmulDescCreate(&matmulDesc, CUBLAS_COMPUTE_32F, CUDA_R_16F);
     
-    // Set transpose operations (none, we handle row-major via layout)
-    cublasOperation_t opA = CUBLAS_OP_N;
-    cublasOperation_t opB = CUBLAS_OP_N;
+    // Set transpose operations
+    // We want: C = A * B where A = hidden_states[M,K], B = qkv_weight[K,N], C = qkv_buf[M,N]
+    // In column-major view: C^T = B^T * A^T
+    cublasOperation_t opA = CUBLAS_OP_N;  // Don't transpose A (weight matrix)
+    cublasOperation_t opB = CUBLAS_OP_N;  // Don't transpose B (hidden_states)
     cublasLtMatmulDescSetAttribute(matmulDesc, CUBLASLT_MATMUL_DESC_TRANSA, &opA, sizeof(opA));
     cublasLtMatmulDescSetAttribute(matmulDesc, CUBLASLT_MATMUL_DESC_TRANSB, &opB, sizeof(opB));
     
@@ -66,22 +68,27 @@ void launch_fused_qkv_gemm_cutlass(
         cublasLtEpilogue_t epilogue = CUBLASLT_EPILOGUE_BIAS;
         cublasLtMatmulDescSetAttribute(matmulDesc, CUBLASLT_MATMUL_DESC_EPILOGUE, 
                                        &epilogue, sizeof(epilogue));
+        // Bias pointer needs to be passed as pointer to the data pointer
         cublasLtMatmulDescSetAttribute(matmulDesc, CUBLASLT_MATMUL_DESC_BIAS_POINTER,
-                                       &qkv_bias, sizeof(qkv_bias));
+                                       &qkv_bias, sizeof(void*));
     }
     
-    // Create matrix layouts for row-major data
-    // For row-major [M,K] @ [K,N] = [M,N], we tell cuBLASLt it's column-major [K,M] @ [N,K] = [N,M]
+    // Create matrix layouts
+    // cuBLASLt uses column-major by default, so we need to transpose our row-major matrices
+    // Row-major C[M,N] = A[M,K] * B[K,N] becomes column-major C^T[N,M] = B^T[N,K] * A^T[K,M]
     cublasLtMatrixLayout_t aLayout, bLayout, cLayout;
     
-    // A (hidden_states): [M, K] row-major → view as [K, M] column-major
-    cublasLtMatrixLayoutCreate(&aLayout, CUDA_R_16F, K, M, K);  // lda = K (stride between rows)
+    // Matrix A (qkv_weight): [K, N] row-major = [N, K] column-major
+    // Leading dimension is N (number of rows in column-major view)
+    cublasLtMatrixLayoutCreate(&aLayout, CUDA_R_16F, N, K, N);
     
-    // B (qkv_weight): [K, N] row-major → view as [N, K] column-major
-    cublasLtMatrixLayoutCreate(&bLayout, CUDA_R_16F, N, K, N);  // ldb = N
+    // Matrix B (hidden_states): [M, K] row-major = [K, M] column-major  
+    // Leading dimension is K (number of rows in column-major view)
+    cublasLtMatrixLayoutCreate(&bLayout, CUDA_R_16F, K, M, K);
     
-    // C (qkv_buf): [M, N] row-major → view as [N, M] column-major
-    cublasLtMatrixLayoutCreate(&cLayout, CUDA_R_16F, N, M, N);  // ldc = N
+    // Matrix C/D (qkv_buf): [M, N] row-major = [N, M] column-major
+    // Leading dimension is N (number of rows in column-major view)
+    cublasLtMatrixLayoutCreate(&cLayout, CUDA_R_16F, N, M, N);
     
     // Create preference for heuristic
     cublasLtMatmulPreference_t preference;
@@ -93,6 +100,7 @@ void launch_fused_qkv_gemm_cutlass(
                                          &workspaceSize, sizeof(workspaceSize));
     
     // Get heuristic for best algorithm
+    // Order: A, B, C, D (where D is output)
     cublasLtMatmulHeuristicResult_t heuristicResult;
     int returnedResults = 0;
     cublasLtMatmulAlgoGetHeuristic(cublaslt_handle, matmulDesc, 
@@ -101,26 +109,41 @@ void launch_fused_qkv_gemm_cutlass(
     
     if (returnedResults == 0) {
         printf("cuBLASLt heuristic failed, no algorithm found\n");
-        // Cleanup
-        cublasLtMatmulPreferenceDestroy(preference);
-        cublasLtMatrixLayoutDestroy(aLayout);
-        cublasLtMatrixLayoutDestroy(bLayout);
-        cublasLtMatrixLayoutDestroy(cLayout);
-        cublasLtMatmulDescDestroy(matmulDesc);
-        return;
+        // Fallback: try without workspace
+        workspaceSize = 0;
+        cublasLtMatmulPreferenceSetAttribute(preference, CUBLASLT_MATMUL_PREF_MAX_WORKSPACE_BYTES,
+                                             &workspaceSize, sizeof(workspaceSize));
+        cublasLtMatmulAlgoGetHeuristic(cublaslt_handle, matmulDesc, 
+                                        aLayout, bLayout, cLayout, cLayout,
+                                        preference, 1, &heuristicResult, &returnedResults);
+        
+        if (returnedResults == 0) {
+            printf("cuBLASLt heuristic failed even without workspace!\n");
+            // Cleanup
+            cublasLtMatmulPreferenceDestroy(preference);
+            cublasLtMatrixLayoutDestroy(aLayout);
+            cublasLtMatrixLayoutDestroy(bLayout);
+            cublasLtMatrixLayoutDestroy(cLayout);
+            cublasLtMatmulDescDestroy(matmulDesc);
+            return;
+        }
     }
     
     // Allocate workspace
     void* workspace = nullptr;
-    cudaMalloc(&workspace, workspaceSize);
+    if (workspaceSize > 0) {
+        cudaMalloc(&workspace, workspaceSize);
+    }
     
     // Execute matmul: D = alpha * A*B + beta * C (with bias epilogue if set)
+    // cuBLASLt performs: D = alpha * op(A) * op(B) + beta * C
+    // In our column-major view: C^T = weight^T * hidden^T
     cublasStatus_t status = cublasLtMatmul(
         cublaslt_handle,
         matmulDesc,
         &alpha,
-        qkv_weight, bLayout,      // B matrix
-        hidden_states, aLayout,    // A matrix
+        qkv_weight, aLayout,       // A matrix (weight)
+        hidden_states, bLayout,    // B matrix (hidden_states)
         &beta,
         qkv_buf, cLayout,          // C matrix (input, beta=0 so unused)
         qkv_buf, cLayout,          // D matrix (output)
@@ -130,7 +153,9 @@ void launch_fused_qkv_gemm_cutlass(
     );
     
     // Cleanup
-    cudaFree(workspace);
+    if (workspace != nullptr) {
+        cudaFree(workspace);
+    }
     cublasLtMatmulPreferenceDestroy(preference);
     cublasLtMatrixLayoutDestroy(aLayout);
     cublasLtMatrixLayoutDestroy(bLayout);
