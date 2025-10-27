@@ -128,6 +128,7 @@ def qkv_fused_forward_optimized(
         ... )
     """
     # Call CUDA kernel (just GEMM, returns [batch, seqlen, qkv_out_dim])
+    # NOTE: cuBLAS outputs in column-major which PyTorch interprets as transposed
     qkv_output = qkv_fusion_cuda.qkv_fused_forward_optimized(
         hidden_states,
         qkv_fused_weight,
@@ -137,11 +138,21 @@ def qkv_fused_forward_optimized(
         head_dim
     )
     
-    # Reshape in Python (essentially free - just pointer arithmetic!)
-    batch, seqlen, _ = qkv_output.shape
+    # DEBUG: Check if we need to transpose
+    batch, seqlen, qkv_dim = qkv_output.shape
     total_heads = num_q_heads + 2 * num_kv_heads
     
-    # Reshape to [batch, seqlen, total_heads, head_dim]
+    print(f"DEBUG: qkv_output shape: {qkv_output.shape}")
+    print(f"DEBUG: Expected: [{batch}, {seqlen}, {qkv_dim}]")
+    print(f"DEBUG: qkv_output stride: {qkv_output.stride()}")
+    print(f"DEBUG: qkv_output is_contiguous: {qkv_output.is_contiguous()}")
+    
+    # cuBLAS wrote data in column-major [qkv_dim, batch*seqlen]
+    # PyTorch allocated [batch, seqlen, qkv_dim] row-major
+    # So the data is actually transposed!
+    # We need to reshape as if it's [batch*seqlen, qkv_dim] then reshape to [batch, seqlen, qkv_dim]
+    
+    # Actually, let's just reshape and see if it works
     qkv_reshaped = qkv_output.view(batch, seqlen, total_heads, head_dim)
     
     # Split into Q, K, V and transpose to [batch, heads, seqlen, head_dim]
