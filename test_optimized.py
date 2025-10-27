@@ -6,7 +6,8 @@ Compares Phase 1 (naive) vs Phase 2 (optimized with cuBLAS)
 
 import torch
 import time
-from qkv_fusion import qkv_fused_forward, qkv_fused_forward_optimized
+# from qkv_fusion import qkv_fused_forward  # Baseline - not used
+from qkv_fusion import qkv_fused_forward_optimized
 from qkv_fusion.weight_utils import prepare_fused_qkv_weights
 
 def test_optimized_correctness():
@@ -15,10 +16,10 @@ def test_optimized_correctness():
     print("Testing Optimized QKV Fusion Correctness")
     print("=" * 80)
     
-    # Qwen3-7B configuration
+    # Qwen3-30B-A3B configuration
     batch_size = 2
     seqlen = 128
-    hidden_dim = 3584
+    hidden_dim = 2048
     num_q_heads = 32
     num_kv_heads = 4
     head_dim = 128
@@ -125,7 +126,7 @@ def benchmark_optimized():
     
     batch_size = 4
     seqlen = 512
-    hidden_dim = 3584
+    hidden_dim = 2048
     num_q_heads = 32
     num_kv_heads = 4
     head_dim = 128

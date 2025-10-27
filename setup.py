@@ -11,7 +11,7 @@ setup(
             name='qkv_fusion_cuda',
             sources=[
                 'csrc/qkv_fused_api.cpp',
-                'csrc/kernels/qkv_fused_fp16.cu',
+                # 'csrc/kernels/qkv_fused_fp16.cu',  # Not used
                 'csrc/kernels/qkv_fused_optimized.cu',  # Phase 2: Optimized with cuBLAS
                 'csrc/kernels/qkv_fused_int4.cu',       # Phase 3: INT4 quantization
             ],

@@ -11,7 +11,7 @@ def benchmark_cublas_gemm():
     batch_size = 4
     seqlen = 512
     M = batch_size * seqlen  # 2048
-    K = 3584
+    K = 2048
     N = 5120
     
     device = torch.device("cuda:0")
@@ -45,7 +45,7 @@ def benchmark_cublas_gemm():
 def benchmark_pytorch_linear():
     batch_size = 4
     seqlen = 512
-    hidden_dim = 3584
+    hidden_dim = 2048
     out_dim = 5120
     
     device = torch.device("cuda:0")
@@ -83,7 +83,7 @@ def benchmark_pytorch_linear():
 def benchmark_three_linears():
     batch_size = 4
     seqlen = 512
-    hidden_dim = 3584
+    hidden_dim = 2048
     q_dim = 4096
     kv_dim = 512
     

@@ -1,0 +1,21 @@
+================================================================================
+Kernel Performance Profiling
+================================================================================
+
+Pure cuBLAS GEMM [2048, 2048] @ [2048, 5120]:
+  Time: 0.061 ms
+  Performance: 703495.08 GFLOPS
+
+PyTorch nn.Linear [4, 512, 2048] -> [4, 512, 5120]:
+  Time: 0.064 ms
+  Performance: 674014.99 GFLOPS
+
+3 separate nn.Linear (Q=4096, K=512, V=512):
+  Time: 0.074 ms
+  Performance: 577791.99 GFLOPS
+
+================================================================================
+Analysis:
+If pure cuBLAS GEMM is fast but your fused kernel is slow,
+the bottleneck is in the split/transpose kernel or memory layout.
+================================================================================

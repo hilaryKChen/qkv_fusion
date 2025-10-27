@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-Test script for QKV Fusion kernel
+Test script for QKV Fusion kernel (BASELINE - NOT USED)
 Tests correctness against PyTorch baseline
+NOTE: This test is for the baseline qkv_fused_forward which has been removed.
 """
 
 import torch
 import time
-from qkv_fusion import qkv_fused_forward
+# from qkv_fusion import qkv_fused_forward  # Baseline implementation removed
 
 def test_qkv_fusion_correctness():
     """Test that fused kernel produces same results as separate linear layers"""

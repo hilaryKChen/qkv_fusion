@@ -32,6 +32,8 @@ except ImportError as e:
         "pip install -e ."
     ) from e
 
+# Baseline qkv_fused_forward is commented out (not used)
+"""
 def qkv_fused_forward(
     hidden_states: torch.Tensor,
     q_weight: torch.Tensor,
@@ -44,7 +46,7 @@ def qkv_fused_forward(
     num_kv_heads: int = 4,
     head_dim: int = 128,
 ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-    """
+    
     Fused QKV projection for transformer attention.
     
     Args:
@@ -64,7 +66,7 @@ def qkv_fused_forward(
         - Q: [batch, num_q_heads, seqlen, head_dim]
         - K: [batch, num_kv_heads, seqlen, head_dim]
         - V: [batch, num_kv_heads, seqlen, head_dim]
-    """
+    
     return qkv_fusion_cuda.qkv_fused_forward(
         hidden_states,
         q_weight,
@@ -77,6 +79,7 @@ def qkv_fused_forward(
         num_kv_heads,
         head_dim
     )
+"""
 
 def qkv_fused_forward_optimized(
     hidden_states: torch.Tensor,
@@ -144,7 +147,7 @@ from .qkv_interface import (
 
 __all__ = [
     # Low-level kernel interfaces
-    "qkv_fused_forward",
+    # "qkv_fused_forward",  # Baseline - not used
     "qkv_fused_forward_optimized",
     # High-level FlashAttention integration
     "qkv_projection_for_flash_attention",
