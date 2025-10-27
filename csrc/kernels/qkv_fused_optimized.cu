@@ -35,61 +35,113 @@
   *         N = qkv_output_dim
   ******************************************************************************/
  
- #include <cublas_v2.h>
- #include <cuda_fp16.h>
- 
-// Optimized GEMM using cuBLAS with proper row-major handling
+#include <cublas_v2.h>
+#include <cublasLt.h>
+#include <cuda_fp16.h>
+
+// Optimized GEMM using cuBLASLt with bias epilogue fusion
 void launch_fused_qkv_gemm_cutlass(
     const half* hidden_states,      // [M, K] row-major
     const half* qkv_weight,         // [K, N] row-major
+    const half* qkv_bias,           // [N] or nullptr
     half* qkv_buf,                  // [M, N] row-major
     int M,                          // batch_size * seq_len
     int N,                          // qkv_output_dim
     int K,                          // hidden_dim
-    cublasHandle_t cublas_handle,
+    cublasLtHandle_t cublaslt_handle,
     cudaStream_t stream
 ) {
     const half alpha = __float2half(1.0f);
     const half beta = __float2half(0.0f);
     
-    cublasSetStream(cublas_handle, stream);
+    // Create matrix multiplication descriptor
+    cublasLtMatmulDesc_t matmulDesc;
+    cublasLtMatmulDescCreate(&matmulDesc, CUBLAS_COMPUTE_16F, CUDA_R_16F);
     
-    // Row-major C = A @ B becomes column-major C^T = B^T @ A^T
-    // We want: qkv_buf[M, N] = hidden_states[M, K] @ qkv_weight[K, N]
-    // In column-major view: qkv_buf^T[N, M] = qkv_weight^T[N, K] @ hidden_states^T[K, M]
-    //
-    // cuBLAS call: C = alpha * op(A) * op(B) + beta * C
-    // where A = qkv_weight^T, B = hidden_states^T, C = qkv_buf^T
-    //
-    // Since our data is row-major, we interpret it as transposed column-major:
-    // - qkv_weight[K, N] row-major = qkv_weight^T[N, K] column-major
-    // - hidden_states[M, K] row-major = hidden_states^T[K, M] column-major
+    // Set transpose operations (none, we handle row-major via layout)
+    cublasOperation_t opA = CUBLAS_OP_N;
+    cublasOperation_t opB = CUBLAS_OP_N;
+    cublasLtMatmulDescSetAttribute(matmulDesc, CUBLASLT_MATMUL_DESC_TRANSA, &opA, sizeof(opA));
+    cublasLtMatmulDescSetAttribute(matmulDesc, CUBLASLT_MATMUL_DESC_TRANSB, &opB, sizeof(opB));
     
-    cublasStatus_t status = cublasGemmEx(
-        cublas_handle,
-        CUBLAS_OP_N,        // Don't transpose qkv_weight^T (already transposed by row-major)
-        CUBLAS_OP_N,        // Don't transpose hidden_states^T (already transposed by row-major)
-        N,                  // Rows of qkv_weight^T[N, K]
-        M,                  // Columns of hidden_states^T[K, M]
-        K,                  // Inner dimension
+    // Set epilogue for bias fusion (if bias is provided)
+    if (qkv_bias != nullptr) {
+        cublasLtEpilogue_t epilogue = CUBLASLT_EPILOGUE_BIAS;
+        cublasLtMatmulDescSetAttribute(matmulDesc, CUBLASLT_MATMUL_DESC_EPILOGUE, 
+                                       &epilogue, sizeof(epilogue));
+        cublasLtMatmulDescSetAttribute(matmulDesc, CUBLASLT_MATMUL_DESC_BIAS_POINTER,
+                                       &qkv_bias, sizeof(qkv_bias));
+    }
+    
+    // Create matrix layouts for row-major data
+    // For row-major [M,K] @ [K,N] = [M,N], we tell cuBLASLt it's column-major [K,M] @ [N,K] = [N,M]
+    cublasLtMatrixLayout_t aLayout, bLayout, cLayout;
+    
+    // A (hidden_states): [M, K] row-major → view as [K, M] column-major
+    cublasLtMatrixLayoutCreate(&aLayout, CUDA_R_16F, K, M, K);  // lda = K (stride between rows)
+    
+    // B (qkv_weight): [K, N] row-major → view as [N, K] column-major
+    cublasLtMatrixLayoutCreate(&bLayout, CUDA_R_16F, N, K, N);  // ldb = N
+    
+    // C (qkv_buf): [M, N] row-major → view as [N, M] column-major
+    cublasLtMatrixLayoutCreate(&cLayout, CUDA_R_16F, N, M, N);  // ldc = N
+    
+    // Create preference for heuristic
+    cublasLtMatmulPreference_t preference;
+    cublasLtMatmulPreferenceCreate(&preference);
+    
+    // Set workspace size (8MB is typical)
+    size_t workspaceSize = 8 * 1024 * 1024;
+    cublasLtMatmulPreferenceSetAttribute(preference, CUBLASLT_MATMUL_PREF_MAX_WORKSPACE_BYTES,
+                                         &workspaceSize, sizeof(workspaceSize));
+    
+    // Get heuristic for best algorithm
+    cublasLtMatmulHeuristicResult_t heuristicResult;
+    int returnedResults = 0;
+    cublasLtMatmulAlgoGetHeuristic(cublaslt_handle, matmulDesc, 
+                                    aLayout, bLayout, cLayout, cLayout,
+                                    preference, 1, &heuristicResult, &returnedResults);
+    
+    if (returnedResults == 0) {
+        printf("cuBLASLt heuristic failed, no algorithm found\n");
+        // Cleanup
+        cublasLtMatmulPreferenceDestroy(preference);
+        cublasLtMatrixLayoutDestroy(aLayout);
+        cublasLtMatrixLayoutDestroy(bLayout);
+        cublasLtMatrixLayoutDestroy(cLayout);
+        cublasLtMatmulDescDestroy(matmulDesc);
+        return;
+    }
+    
+    // Allocate workspace
+    void* workspace = nullptr;
+    cudaMalloc(&workspace, workspaceSize);
+    
+    // Execute matmul: D = alpha * A*B + beta * C (with bias epilogue if set)
+    cublasStatus_t status = cublasLtMatmul(
+        cublaslt_handle,
+        matmulDesc,
         &alpha,
-        qkv_weight,         // First matrix: qkv_weight^T[N, K] in column-major view
-        CUDA_R_16F,
-        N,                  // Leading dimension (rows in column-major = N)
-        // K,
-        hidden_states,      // Second matrix: hidden_states^T[K, M] in column-major view
-        CUDA_R_16F,
-        K,                  // Leading dimension (rows in column-major = K)
+        qkv_weight, bLayout,      // B matrix
+        hidden_states, aLayout,    // A matrix
         &beta,
-        qkv_buf,            // Output: qkv_buf^T[N, M] in column-major view
-        CUDA_R_16F,
-        N,                  // Leading dimension (rows in column-major = N)
-        CUBLAS_COMPUTE_16F,
-        CUBLAS_GEMM_DEFAULT_TENSOR_OP
+        qkv_buf, cLayout,          // C matrix (input, beta=0 so unused)
+        qkv_buf, cLayout,          // D matrix (output)
+        &heuristicResult.algo,
+        workspace, workspaceSize,
+        stream
     );
     
+    // Cleanup
+    cudaFree(workspace);
+    cublasLtMatmulPreferenceDestroy(preference);
+    cublasLtMatrixLayoutDestroy(aLayout);
+    cublasLtMatrixLayoutDestroy(bLayout);
+    cublasLtMatrixLayoutDestroy(cLayout);
+    cublasLtMatmulDescDestroy(matmulDesc);
+    
     if (status != CUBLAS_STATUS_SUCCESS) {
-        printf("cuBLAS GEMM failed with status: %d\n", status);
+        printf("cuBLASLt matmul failed with status: %d\n", status);
     }
 }
  
@@ -185,76 +237,74 @@ __global__ void split_qkv_bias_transpose_kernel_optimized(
   * Host function: Orchestrates the two-kernel approach
   ******************************************************************************/
  
- void run_qkv_fusion_optimized(
-     QKVFusedParams &params,
-     cublasHandle_t cublas_handle,
-     cudaStream_t stream
- ) {
-     const int batch_size = params.batch_size;
-     const int seq_len = params.seqlen;
-     const int hidden_dim = params.hidden_dim;
-     const int num_q_heads = params.num_q_heads;
-     const int num_kv_heads = params.num_kv_heads;
-     const int head_dim = params.head_dim;
-     
-     // Total output dimension: Q + K + V
-     const int qkv_output_dim = (num_q_heads + 2 * num_kv_heads) * head_dim;
-    const int token_num = batch_size * seq_len;
-    const int M = token_num;
-    const int N = qkv_output_dim;
-    const int K = hidden_dim;
+void run_qkv_fusion_optimized(
+    QKVFusedParams &params,
+    cublasLtHandle_t cublaslt_handle,
+    cudaStream_t stream
+) {
+    const int batch_size = params.batch_size;
+    const int seq_len = params.seqlen;
+    const int hidden_dim = params.hidden_dim;
+    const int num_q_heads = params.num_q_heads;
+    const int num_kv_heads = params.num_kv_heads;
+    const int head_dim = params.head_dim;
     
-    // Use pre-allocated workspace (no cudaMalloc overhead!)
-    half* qkv_buf = reinterpret_cast<half*>(params.workspace_ptr);
+    // Total output dimension: Q + K + V
+    const int qkv_output_dim = (num_q_heads + 2 * num_kv_heads) * head_dim;
+   const int token_num = batch_size * seq_len;
+   const int M = token_num;
+   const int N = qkv_output_dim;
+   const int K = hidden_dim;
+   
+   // Use pre-allocated workspace (no cudaMalloc overhead!)
+   half* qkv_buf = reinterpret_cast<half*>(params.workspace_ptr);
 
-    // Step 1: Single GEMM for all Q, K, V projections
-     // hidden_states [M, K] @ qkv_weight [K, N] = qkv_buf [M, N]
-     // where M = batch_size * seq_len
-     //       K = hidden_dim
-     //       N = (num_q_heads + 2*num_kv_heads) * head_dim
-     //
-     // For Qwen3: M = batch*seq, K = 3584, N = 5120
-     
-    // Output directly to workspace (will be reshaped in Python)
+   // Step 1: Single cuBLASLt GEMM with bias epilogue fusion
+    // hidden_states [M, K] @ qkv_weight [K, N] = qkv_buf [M, N]
+    // Bias is fused in the GEMM epilogue (no separate kernel needed!)
+    //
+    // For Qwen3: M = batch*seq, K = 2048, N = 5120
+    
     launch_fused_qkv_gemm_cutlass(
         reinterpret_cast<const half*>(params.hidden_states_ptr),
         reinterpret_cast<const half*>(params.qkv_fused_weight_ptr),
+        params.has_bias ? reinterpret_cast<const half*>(params.qkv_fused_bias_ptr) : nullptr,
         qkv_buf,
         M, N, K,
-        cublas_handle,
+        cublaslt_handle,
         stream
     );
     
-   // OPTIMIZATION: Skip split kernel, do reshaping in Python instead!
-   // Python reshape/view is essentially free (just pointer arithmetic)
-   // This eliminates 0.07 ms overhead from the split kernel
-   //
-   // The split kernel has been removed - Python will do:
-   //   qkv_output.view(batch, seq, heads, head_dim)
-   //   then slice into Q, K, V
-   //
-   // Old approach (slow):
-   //   CUDA GEMM (0.10 ms) → CUDA split kernel (0.07 ms) = 0.17 ms
-   // New approach (fast):
-   //   CUDA GEMM (0.10 ms) → Python reshape (0.001 ms) = 0.10 ms
-   
-   /* COMMENTED OUT - Split kernel removed for performance
-   const int threads = 256;
-   const int blocks = min(token_num, 512);
-   
-   split_qkv_bias_transpose_kernel_optimized<half><<<blocks, threads, 0, stream>>>(
-       reinterpret_cast<half*>(params.q_out_ptr),
-       reinterpret_cast<half*>(params.k_out_ptr),
-       reinterpret_cast<half*>(params.v_out_ptr),
-       qkv_buf,
-       params.has_bias ? reinterpret_cast<const half*>(params.qkv_fused_bias_ptr) : nullptr,
-       batch_size,
-       seq_len,
-       num_q_heads,
-       num_kv_heads,
-       head_dim
-   );
-   */
+    // Step 2: NO SPLIT KERNEL NEEDED!
+    // Bias is already added by cuBLASLt epilogue
+    // Python will do the reshape/slice (zero-copy operations)
+    //
+    // Output qkv_buf is now [batch*seq, 5120] with bias already applied
+    // Python will:
+    //   1. view as [batch, seq, 5120]
+    //   2. slice into Q[batch, seq, 4096], K[batch, seq, 512], V[batch, seq, 512]
+    //   3. view as [batch, seq, heads, head_dim]
+    //   4. transpose to [batch, heads, seq, head_dim]
+    //
+    // All of these are zero-copy view operations except the final transpose!
+    
+    /* SPLIT KERNEL REMOVED - Now handled in Python
+    const int threads = 256;
+    const int blocks = min(token_num, 512);
+    
+    split_qkv_bias_transpose_kernel_optimized<half><<<blocks, threads, 0, stream>>>(
+        reinterpret_cast<half*>(params.q_out_ptr),
+        reinterpret_cast<half*>(params.k_out_ptr),
+        reinterpret_cast<half*>(params.v_out_ptr),
+        qkv_buf,
+        nullptr,  // Bias already added by cuBLASLt
+        batch_size,
+        seq_len,
+        num_q_heads,
+        num_kv_heads,
+        head_dim
+    );
+    */
 
    // No cudaFree needed - workspace is managed by PyTorch!
     

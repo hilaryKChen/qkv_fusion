@@ -127,31 +127,29 @@ def qkv_fused_forward_optimized(
         ...     num_q_heads=32, num_kv_heads=4, head_dim=128
         ... )
     """
-    # Call CUDA kernel (just GEMM, returns [batch, seqlen, qkv_out_dim])
+    # Call CUDA kernel with cuBLASLt (bias is fused in epilogue!)
+    # Returns [batch, seqlen, qkv_out_dim] with bias already applied
     qkv_output = qkv_fusion_cuda.qkv_fused_forward_optimized(
         hidden_states,
         qkv_fused_weight,
-        None,  # Don't pass bias to CUDA (we'll add it in Python)
+        qkv_fused_bias,  # Pass bias to CUDA - cuBLASLt will fuse it!
         num_q_heads,
         num_kv_heads,
         head_dim
     )
     
-    # Add bias in Python (if provided)
-    if qkv_fused_bias is not None:
-        qkv_output = qkv_output + qkv_fused_bias
-    
-    # Reshape in Python (essentially free - just pointer arithmetic!)
+    # Reshape in Python (zero-copy view operations!)
     batch, seqlen, qkv_dim = qkv_output.shape
     total_heads = num_q_heads + 2 * num_kv_heads
-    
+
     qkv_reshaped = qkv_output.view(batch, seqlen, total_heads, head_dim)
-    
+
     # Split into Q, K, V and transpose to [batch, heads, seqlen, head_dim]
+    # These are all zero-copy views except the final .contiguous() call
     q = qkv_reshaped[:, :, :num_q_heads, :].transpose(1, 2).contiguous()
     k = qkv_reshaped[:, :, num_q_heads:num_q_heads+num_kv_heads, :].transpose(1, 2).contiguous()
     v = qkv_reshaped[:, :, num_q_heads+num_kv_heads:, :].transpose(1, 2).contiguous()
-    
+
     return q, k, v
 
 __version__ = "0.1.0"

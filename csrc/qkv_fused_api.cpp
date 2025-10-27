@@ -6,6 +6,7 @@
 #include <ATen/cuda/CUDAContext.h>
 #include <c10/cuda/CUDAGuard.h>
 #include <cublas_v2.h>
+#include <cublasLt.h>
 
 #include "qkv_fused_params.h"
 
@@ -13,7 +14,7 @@ namespace qkv_fusion {
 
 // Forward declarations of CUDA kernel launchers
 // void run_qkv_fusion_fp16(QKVFusedParams &params, cudaStream_t stream);  // Not used
-void run_qkv_fusion_optimized(QKVFusedParams &params, cublasHandle_t cublas_handle, cudaStream_t stream);
+void run_qkv_fusion_optimized(QKVFusedParams &params, cublasLtHandle_t cublaslt_handle, cudaStream_t stream);
 
 // Python-facing function (baseline - not used, commented out)
 /*
@@ -184,15 +185,21 @@ torch::Tensor qkv_fused_forward_optimized(
     params.has_bias = qkv_fused_bias.has_value();
     params.is_quantized = false;
     
-    // Get CUDA stream and cuBLAS handle
+    // Get CUDA stream and create cuBLASLt handle
     at::cuda::CUDAGuard device_guard(hidden_states.device());
     cudaStream_t stream = at::cuda::getCurrentCUDAStream();
-    cublasHandle_t cublas_handle = at::cuda::getCurrentCUDABlasHandle();
     
-    // Launch optimized kernel (just GEMM, no split)
-    run_qkv_fusion_optimized(params, cublas_handle, stream);
+    // Create cuBLASLt handle (lightweight, but ideally should be cached)
+    cublasLtHandle_t cublaslt_handle;
+    cublasLtCreate(&cublaslt_handle);
     
-    // Return raw output - Python will do the reshaping
+    // Launch optimized kernel (just GEMM with bias epilogue, no split)
+    run_qkv_fusion_optimized(params, cublaslt_handle, stream);
+    
+    // Cleanup
+    cublasLtDestroy(cublaslt_handle);
+    
+    // Return raw output - Python will do the reshaping (zero-copy!)
     return qkv_output;
 }
 
