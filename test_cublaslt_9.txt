@@ -1,0 +1,2276 @@
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=256 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=256 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=256 cols=5120 ld=5120
+[LtCall] A=0x1551ebe00000 B=0x1551d2000000 D=0x1551d0a00000 bias=0x1551ebf82800 M=256 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d4400000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d4400000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d4400000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d4400000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d4400000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d4400000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d4400000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d4400000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d4400000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d4400000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=2048 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=2048 cols=5120 ld=5120
+[LtCall] A=0x1551c6000000 B=0x1551d2000000 D=0x1551d5800000 bias=0x1551d1702800 M=2048 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[c================================================================================
+Testing Optimized QKV Fusion Correctness
+================================================================================
+Input shape: torch.Size([2, 128, 2048])
+Configuration: 32 Q heads, 4 KV heads, 128 head_dim
+
+Q proj weight shape: torch.Size([4096, 2048])
+K proj weight shape: torch.Size([512, 2048])
+V proj weight shape: torch.Size([512, 2048])
+
+[1] Running PyTorch baseline (3 nn.Linear)...
+Q baseline shape: torch.Size([2, 32, 128, 128])
+K baseline shape: torch.Size([2, 4, 128, 128])
+V baseline shape: torch.Size([2, 4, 128, 128])
+
+[2] Running optimized cuBLAS kernel...
+Fused weight shape: torch.Size([2048, 5120])
+Fused bias shape: torch.Size([5120])
+Q optimized shape: torch.Size([2, 32, 128, 128])
+K optimized shape: torch.Size([2, 4, 128, 128])
+V optimized shape: torch.Size([2, 4, 128, 128])
+
+[3] Comparing results...
+Q max absolute diff: 0.001953
+K max absolute diff: 0.001953
+V max absolute diff: 0.001953
+Q mean relative error: 0.000193
+K mean relative error: 0.000192
+V mean relative error: 0.000188
+
+✓ PASS: Optimized kernel matches PyTorch baseline!
+
+================================================================================
+Benchmarking QKV Fusion Performance
+================================================================================
+
+Warming up...
+
+Benchmarking 100 iterations...
+
+Configuration:
+  Batch size: 4
+  Sequence length: 512
+  Hidden dim: 2048
+  Q heads: 32, KV heads: 4
+  Total tokens: 2048
+
+Results:
+  PyTorch (3 nn.Linear + reshape):  0.073 ms
+  Optimized (cuBLAS fused):         0.771 ms
+
+  Speedup: 0.09x
+  Performance: 55.74 GFLOPS
+
+✗ WARNING: Optimized kernel is slower than baseline!
+  This suggests a bug or suboptimal implementation.
+uBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel

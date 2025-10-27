@@ -1,0 +1,32 @@
+================================================================================
+cuBLASLt QKV epilogue correctness test
+================================================================================
+Shapes: A=[256,2048], B=[2048,5120], D=[256,5120]
+Max abs diffs: Q=0.001953 K=0.001953 V=0.001953
+Mean rel errs: Q=0.000194 K=0.000190 V=0.000189
+Sample Q[0,0,0,:] non-zero: True
+--------------------------------------------------------------------------------
+Note: Below, the C++ kernel prints layout orders, ld's, M/K/N, heuristic counts, workspace,
+      selected algo, and whether bias epilogue fused or fallback bias kernel was used.
+--------------------------------------------------------------------------------
+PASS: Lt path matches baseline within strict tolerances.
+[Pack] Packing B from row-major to column-major...
+[Pack] Numerical check: max_abs_diff = 0.000000e+00 (sample 8x8)
+[LAYOUT] A order=ROW rows=256 cols=2048 ld=2048
+[LAYOUT] B_row order=ROW rows=2048 cols=5120 ld=5120
+[LAYOUT] B_col order=COL rows=2048 cols=5120 ld=2048
+[LAYOUT] C order=ROW rows=256 cols=5120 ld=5120
+[LAYOUT] D order=ROW rows=256 cols=5120 ld=5120
+[LtCall] A=0x1551ebe00000 B=0x1551d3000000 D=0x1551d0a00000 bias=0x1551ebfc2800 M=256 K=2048 N=5120
+[cuBLASLt] Trying configuration: B=column-major (packed), opB=N
+[LtHeur] returned=0 ws_cap=67108864 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[LtHeur] returned=0 ws_cap=16777216 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[LtHeur] returned=0 ws_cap=0 bytes (bias_try=1)
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] Retrying (B=col) without bias epilogue
+[LtHeur] returned=8 ws_cap=67108864 bytes (bias_try=0)
+[cuBLASLt] Trying algo 0 (mode=Bcol_N bias=0) workspace=0 bytes
+[cuBLASLt] Selected algo 0 (mode=Bcol_N bias=0)
+[cuBLASLt] Bias epilogue not available; launching fallback bias kernel
