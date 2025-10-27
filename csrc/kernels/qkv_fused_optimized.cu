@@ -53,7 +53,7 @@ void launch_fused_qkv_gemm_cutlass(
 
     // Describe the GEMM in row-major form so we can pass PyTorch-contiguous tensors directly.
     cublasLtMatmulDesc_t matmulDesc;
-    cublasLtMatmulDescCreate(&matmulDesc, CUBLAS_COMPUTE_32F, CUDA_R_16F);
+    cublasLtMatmulDescCreate(&matmulDesc, CUBLAS_COMPUTE_32F, CUDA_R_32F);
 
     cublasOperation_t opA = CUBLAS_OP_N;  // hidden_states[M, K]
     cublasOperation_t opB = CUBLAS_OP_N;  // qkv_weight[K, N]
@@ -90,29 +90,45 @@ void launch_fused_qkv_gemm_cutlass(
     cublasLtMatmulPreference_t preference;
     cublasLtMatmulPreferenceCreate(&preference);
 
-    size_t maxWorkspaceSize = 8 * 1024 * 1024;  // cap at 8MB for now
-    cublasLtMatmulPreferenceSetAttribute(
-        preference,
-        CUBLASLT_MATMUL_PREF_MAX_WORKSPACE_BYTES,
-        &maxWorkspaceSize,
-        sizeof(maxWorkspaceSize));
+    size_t workspace_candidates[] = {
+        static_cast<size_t>(64) * 1024 * 1024,  // 64MB cap for main path
+        0                                       // fallback: no workspace
+    };
 
-    cublasLtMatmulHeuristicResult_t heuristicResult;
+    cublasLtMatmulHeuristicResult_t heuristicResult{};
     int returnedResults = 0;
-    cublasLtMatmulAlgoGetHeuristic(
-        cublaslt_handle,
-        matmulDesc,
-        aLayout,
-        bLayout,
-        cLayout,
-        cLayout,
-        preference,
-        1,
-        &heuristicResult,
-        &returnedResults);
+    bool algo_found = false;
+    size_t workspaceSize = 0;
 
-    if (returnedResults == 0) {
-        printf("cuBLASLt heuristic failed, no algorithm found\n");
+    for (size_t workspaceCap : workspace_candidates) {
+        cublasLtMatmulPreferenceSetAttribute(
+            preference,
+            CUBLASLT_MATMUL_PREF_MAX_WORKSPACE_BYTES,
+            &workspaceCap,
+            sizeof(workspaceCap));
+
+        returnedResults = 0;
+        cublasLtMatmulAlgoGetHeuristic(
+            cublaslt_handle,
+            matmulDesc,
+            aLayout,
+            bLayout,
+            cLayout,
+            cLayout,
+            preference,
+            1,
+            &heuristicResult,
+            &returnedResults);
+
+        if (returnedResults > 0) {
+            algo_found = true;
+            workspaceSize = heuristicResult.workspaceSize;
+            break;
+        }
+    }
+
+    if (!algo_found) {
+        printf("cuBLASLt heuristic failed, no algorithm found even without workspace!\n");
         cublasLtMatmulPreferenceDestroy(preference);
         cublasLtMatrixLayoutDestroy(aLayout);
         cublasLtMatrixLayoutDestroy(bLayout);
@@ -121,7 +137,6 @@ void launch_fused_qkv_gemm_cutlass(
         return;
     }
 
-    size_t workspaceSize = heuristicResult.workspaceSize;
     void* workspace = nullptr;
     if (workspaceSize > 0) {
         cudaMalloc(&workspace, workspaceSize);
