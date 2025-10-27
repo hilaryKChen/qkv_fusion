@@ -1,0 +1,27 @@
+================================================================================
+GEMM Overhead Investigation
+================================================================================
+
+Matrix dimensions: [2048, 2048] @ [2048, 5120] = [2048, 5120]
+
+[1] torch.matmul (2D tensors)                      0.063 ms
+[2] F.linear without bias (3D input)               0.063 ms
+[3] F.linear with bias (3D input)                  0.065 ms
+[4] Your CUDA kernel (GEMM only, no bias)          0.067 ms
+[5] Your CUDA kernel (GEMM + bias in CUDA)         0.096 ms
+[6] Full lightweight (GEMM + PyTorch bias/split)   0.098 ms
+
+================================================================================
+Analysis
+================================================================================
+
+Pure torch.matmul:                    0.063 ms (baseline)
+F.linear without bias:                0.063 ms (+0.000 ms)
+F.linear with bias:                   0.065 ms (+0.003 ms)
+Your CUDA (no bias):                  0.067 ms (+0.004 ms)
+Your CUDA (with bias):                0.096 ms (+0.034 ms)
+Full lightweight:                     0.098 ms (+0.036 ms)
+
+Bias add overhead (CUDA):             0.030 ms
+Bias add overhead (PyTorch):          0.003 ms
+================================================================================

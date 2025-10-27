@@ -1,0 +1,56 @@
+================================================================================
+Testing Optimized QKV Fusion Correctness
+================================================================================
+Input shape: torch.Size([2, 128, 3584])
+Configuration: 32 Q heads, 4 KV heads, 128 head_dim
+
+Q proj weight shape: torch.Size([4096, 3584])
+K proj weight shape: torch.Size([512, 3584])
+V proj weight shape: torch.Size([512, 3584])
+
+[1] Running PyTorch baseline (3 nn.Linear)...
+Q baseline shape: torch.Size([2, 32, 128, 128])
+K baseline shape: torch.Size([2, 4, 128, 128])
+V baseline shape: torch.Size([2, 4, 128, 128])
+
+[2] Running optimized cuBLAS kernel...
+Fused weight shape: torch.Size([3584, 5120])
+Fused bias shape: torch.Size([5120])
+Q optimized shape: torch.Size([2, 32, 128, 128])
+K optimized shape: torch.Size([2, 4, 128, 128])
+V optimized shape: torch.Size([2, 4, 128, 128])
+
+[3] Comparing results...
+Q max absolute diff: 0.015625
+K max absolute diff: 0.011719
+V max absolute diff: 0.011719
+Q mean relative error: 0.009674
+K mean relative error: 0.007484
+V mean relative error: 0.009987
+
+✓ PASS: Optimized kernel matches PyTorch baseline!
+
+================================================================================
+Benchmarking QKV Fusion Performance
+================================================================================
+
+Warming up...
+
+Benchmarking 100 iterations...
+
+Configuration:
+  Batch size: 4
+  Sequence length: 512
+  Hidden dim: 3584
+  Q heads: 32, KV heads: 4
+  Total tokens: 2048
+
+Results:
+  PyTorch (3 nn.Linear + reshape):  0.115 ms
+  Optimized (cuBLAS fused):         0.158 ms
+
+  Speedup: 0.73x
+  Performance: 476.95 GFLOPS
+
+✗ WARNING: Optimized kernel is slower than baseline!
+  This suggests a bug or suboptimal implementation.

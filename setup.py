@@ -13,7 +13,8 @@ setup(
                 'csrc/qkv_fused_api.cpp',
                 # 'csrc/kernels/qkv_fused_fp16.cu',  # Not used
                 'csrc/kernels/qkv_fused_optimized.cu',  # Phase 2: Optimized with cuBLAS
-                'csrc/kernels/qkv_fused_int4.cu',       # Phase 3: INT4 quantization
+                'csrc/kernels/qkv_fused_lightweight.cu',  # Phase 3: Lightweight GEMM+Bias
+                'csrc/kernels/qkv_fused_int4.cu',       # Phase 4: INT4 quantization
             ],
             extra_compile_args={
                 'cxx': ['-O3', '-std=c++17'],

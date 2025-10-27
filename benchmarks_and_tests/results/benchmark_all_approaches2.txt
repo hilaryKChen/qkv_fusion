@@ -1,0 +1,56 @@
+================================================================================
+Comprehensive QKV Fusion Benchmark
+================================================================================
+
+Configuration:
+  Batch size: 4
+  Sequence length: 512
+  Hidden dim: 2048
+  Q heads: 32, KV heads: 4
+  Head dim: 128
+  Total tokens: 2048
+  Iterations: 100
+
+================================================================================
+Benchmarking...
+================================================================================
+
+[1] PyTorch Baseline (3 nn.Linear + reshape/transpose)
+    Time: 0.074 ms
+    Performance: 583273.39 GFLOPS
+
+[2] Phase 2 Optimized (cuBLAS + custom split/bias/transpose)
+    Time: 0.110 ms
+    Performance: 389365.81 GFLOPS
+    Speedup vs baseline: 0.67x
+
+Phase 2 Optimized correctness check:
+  Q max diff: 0.015625
+  K max diff: 0.010742
+  V max diff: 0.009766
+  ✓ PASS
+
+[3] Phase 3 Lightweight (cuBLAS + bias + PyTorch split/transpose)
+    Time: 0.097 ms
+    Performance: 443202.25 GFLOPS
+    Speedup vs baseline: 0.76x
+
+Phase 3 Lightweight correctness check:
+  Q max diff: 0.015625
+  K max diff: 0.010742
+  V max diff: 0.009766
+  ✓ PASS
+
+================================================================================
+Summary
+================================================================================
+
+Approach                       Time (ms)    GFLOPS       Speedup   
+--------------------------------------------------------------------------------
+PyTorch Baseline                    0.074    583273.39       1.00x
+Phase 2 Optimized                   0.110    389365.81       0.67x
+Phase 3 Lightweight                 0.097    443202.25       0.76x
+
+================================================================================
+⚠ PyTorch baseline is still the fastest. Need to investigate bottlenecks.
+================================================================================

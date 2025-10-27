@@ -1,0 +1,29 @@
+================================================================================
+Component-by-Component Profiling
+================================================================================
+
+[1] CUDA kernel only (GEMM + bias, no Python postprocessing)
+    Time: 0.095 ms
+
+[2] Full lightweight (CUDA + Python split/transpose)
+    Time: 0.097 ms
+
+[3] PyTorch split/transpose only (on pre-computed tensor)
+    Time: 0.014 ms
+
+[4] Pure cuBLAS GEMM (for comparison)
+    Time: 0.062 ms
+
+================================================================================
+Analysis
+================================================================================
+
+CUDA kernel (GEMM + bias):           0.095 ms
+Python split/transpose overhead:     0.014 ms
+Expected total:                      0.109 ms
+Actual total:                        0.097 ms
+Unexplained overhead:                -0.012 ms
+
+Comparison to pure GEMM:             0.062 ms
+CUDA kernel overhead vs pure GEMM:   0.033 ms
+================================================================================

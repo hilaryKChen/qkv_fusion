@@ -1,0 +1,23 @@
+================================================================================
+Detailed CUDA Event Timing
+================================================================================
+
+Average times over 100 iterations:
+  1. CUDA GEMM (no bias):      0.082 ms
+  2. PyTorch bias add:         0.033 ms
+  3. Split (slicing):          0.003 ms
+  4. Transpose:                0.003 ms
+  ─────────────────────────────────────
+  Total:                       0.121 ms
+
+Expected vs Actual:
+  Expected GEMM:               0.067 ms
+  Actual GEMM:                 0.082 ms
+  GEMM overhead:               0.015 ms
+
+⚠ PROBLEM: CUDA GEMM is slower than expected!
+  Possible causes:
+  - CUDA kernel is not actually skipping bias
+  - Memory allocation overhead
+  - cuBLAS configuration issue
+================================================================================

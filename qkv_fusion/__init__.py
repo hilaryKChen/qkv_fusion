@@ -127,29 +127,96 @@ def qkv_fused_forward_optimized(
         ...     num_q_heads=32, num_kv_heads=4, head_dim=128
         ... )
     """
-    # Call CUDA kernel with cuBLASLt (bias is fused in epilogue!)
-    # Returns [batch, seqlen, qkv_out_dim] with bias already applied
-    qkv_output = qkv_fusion_cuda.qkv_fused_forward_optimized(
+    return qkv_fusion_cuda.qkv_fused_forward_optimized(
         hidden_states,
         qkv_fused_weight,
-        qkv_fused_bias,  # Pass bias to CUDA - cuBLASLt will fuse it!
+        qkv_fused_bias,
+        num_q_heads,
+        num_kv_heads,
+        head_dim
+    )
+
+def qkv_fused_forward_lightweight(
+    hidden_states: torch.Tensor,
+    qkv_fused_weight: torch.Tensor,
+    qkv_fused_bias: Optional[torch.Tensor] = None,
+    num_q_heads: int = 32,
+    num_kv_heads: int = 4,
+    head_dim: int = 128,
+) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    """
+    Lightweight fused QKV projection: GEMM+Bias in CUDA, split+transpose in PyTorch.
+    
+    This approach minimizes custom CUDA code and leverages PyTorch's highly
+    optimized tensor operations for reshape/transpose.
+    
+    Strategy:
+    1. cuBLAS GEMM with concatenated weights (highly optimized)
+    2. Simple element-wise bias add kernel (memory bandwidth bound, ~free)
+    3. Split Q/K/V and transpose in PyTorch (nearly free view operations)
+    
+    Expected performance: Similar to 3 separate nn.Linear, much faster than
+    the complex split+bias+transpose CUDA kernel.
+    
+    Args:
+        hidden_states: Input tensor [batch, seqlen, hidden_dim]
+        qkv_fused_weight: Concatenated weight [hidden_dim, qkv_out_dim]
+                         where qkv_out_dim = (num_q_heads + 2*num_kv_heads) * head_dim
+        qkv_fused_bias: Optional concatenated bias [qkv_out_dim]
+        num_q_heads: Number of query heads (e.g., 32 for Qwen3)
+        num_kv_heads: Number of key/value heads (e.g., 4 for Qwen3 GQA)
+        head_dim: Dimension per head (e.g., 128 for Qwen3)
+    
+    Returns:
+        Tuple of (Q, K, V) tensors:
+        - Q: [batch, num_q_heads, seqlen, head_dim]
+        - K: [batch, num_kv_heads, seqlen, head_dim]
+        - V: [batch, num_kv_heads, seqlen, head_dim]
+    
+    Example:
+        >>> from qkv_fusion.weight_utils import prepare_fused_qkv_weights
+        >>> 
+        >>> # Prepare fused weights
+        >>> fused_weight, fused_bias = prepare_fused_qkv_weights(
+        ...     q_weight, k_weight, v_weight
+        ... )
+        >>> 
+        >>> # Run lightweight kernel
+        >>> q, k, v = qkv_fused_forward_lightweight(
+        ...     hidden_states, fused_weight, fused_bias,
+        ...     num_q_heads=32, num_kv_heads=4, head_dim=128
+        ... )
+    """
+    batch_size, seqlen, hidden_dim = hidden_states.shape
+    q_dim = num_q_heads * head_dim
+    kv_dim = num_kv_heads * head_dim
+    
+    # Step 1: GEMM only (no bias in CUDA)
+    # Output: [batch, seqlen, q_dim + 2*kv_dim]
+    qkv_output = qkv_fusion_cuda.qkv_fused_forward_lightweight(
+        hidden_states,
+        qkv_fused_weight,
+        None,  # Pass None for bias - we'll add it in PyTorch
         num_q_heads,
         num_kv_heads,
         head_dim
     )
     
-    # Reshape in Python (zero-copy view operations!)
-    batch, seqlen, qkv_dim = qkv_output.shape
-    total_heads = num_q_heads + 2 * num_kv_heads
-
-    qkv_reshaped = qkv_output.view(batch, seqlen, total_heads, head_dim)
-
-    # Split into Q, K, V and transpose to [batch, heads, seqlen, head_dim]
-    # These are all zero-copy views except the final .contiguous() call
-    q = qkv_reshaped[:, :, :num_q_heads, :].transpose(1, 2).contiguous()
-    k = qkv_reshaped[:, :, num_q_heads:num_q_heads+num_kv_heads, :].transpose(1, 2).contiguous()
-    v = qkv_reshaped[:, :, num_q_heads+num_kv_heads:, :].transpose(1, 2).contiguous()
-
+    # Step 2: Add bias using PyTorch (highly optimized)
+    if qkv_fused_bias is not None:
+        qkv_output = qkv_output + qkv_fused_bias
+    
+    # Step 3: Split Q, K, V (PyTorch view operation - no data copy)
+    q = qkv_output[:, :, :q_dim]
+    k = qkv_output[:, :, q_dim:q_dim + kv_dim]
+    v = qkv_output[:, :, q_dim + kv_dim:]
+    
+    # Step 4: Reshape and transpose (PyTorch view + transpose - minimal overhead)
+    # [batch, seqlen, num_heads * head_dim] -> [batch, seqlen, num_heads, head_dim] -> [batch, num_heads, seqlen, head_dim]
+    q = q.view(batch_size, seqlen, num_q_heads, head_dim).transpose(1, 2)
+    k = k.view(batch_size, seqlen, num_kv_heads, head_dim).transpose(1, 2)
+    v = v.view(batch_size, seqlen, num_kv_heads, head_dim).transpose(1, 2)
+    
     return q, k, v
 
 __version__ = "0.1.0"
@@ -165,6 +232,7 @@ __all__ = [
     # Low-level kernel interfaces
     # "qkv_fused_forward",  # Baseline - not used
     "qkv_fused_forward_optimized",
+    "qkv_fused_forward_lightweight",
     # High-level FlashAttention integration
     "qkv_projection_for_flash_attention",
     "fused_qkv_attention",
