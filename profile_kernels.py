@@ -6,7 +6,7 @@ Profile individual kernels to find the bottleneck
 import torch
 import time
 
-# Test just cuBLAS GEMM performance
+# Test just cuBLAS GEMM performance (similar to our kernel)
 def benchmark_cublas_gemm():
     batch_size = 4
     seqlen = 512
@@ -17,8 +17,13 @@ def benchmark_cublas_gemm():
     device = torch.device("cuda:0")
     dtype = torch.float16
     
-    A = torch.randn(M, K, dtype=dtype, device=device)
-    B = torch.randn(K, N, dtype=dtype, device=device)
+    # Create contiguous row-major matrices (same as our kernel)
+    A = torch.randn(M, K, dtype=dtype, device=device).contiguous()
+    B = torch.randn(K, N, dtype=dtype, device=device).contiguous()
+    
+    print(f"Matrix layout check:")
+    print(f"  A shape: {A.shape}, stride: {A.stride()}, contiguous: {A.is_contiguous()}")
+    print(f"  B shape: {B.shape}, stride: {B.stride()}, contiguous: {B.is_contiguous()}")
     
     # Warmup
     for _ in range(10):
@@ -36,9 +41,10 @@ def benchmark_cublas_gemm():
     flops = 2 * M * N * K
     gflops = flops / (gemm_time * 1e6)
     
-    print(f"Pure cuBLAS GEMM [{M}, {K}] @ [{K}, {N}]:")
+    print(f"\nPure GEMM [{M}, {K}] @ [{K}, {N}] (torch.matmul):")
     print(f"  Time: {gemm_time:.3f} ms")
     print(f"  Performance: {gflops:.2f} GFLOPS")
+    print(f"  Note: This uses PyTorch's optimized path, may differ from raw cuBLAS")
     print()
 
 # Test PyTorch Linear (includes bias and optimizations)
