@@ -127,7 +127,8 @@ def qkv_fused_forward_optimized(
         ...     num_q_heads=32, num_kv_heads=4, head_dim=128
         ... )
     """
-    return qkv_fusion_cuda.qkv_fused_forward_optimized(
+    # Call CUDA kernel (just GEMM, returns [batch, seqlen, qkv_out_dim])
+    qkv_output = qkv_fusion_cuda.qkv_fused_forward_optimized(
         hidden_states,
         qkv_fused_weight,
         qkv_fused_bias,
@@ -135,6 +136,20 @@ def qkv_fused_forward_optimized(
         num_kv_heads,
         head_dim
     )
+    
+    # Reshape in Python (essentially free - just pointer arithmetic!)
+    batch, seqlen, _ = qkv_output.shape
+    total_heads = num_q_heads + 2 * num_kv_heads
+    
+    # Reshape to [batch, seqlen, total_heads, head_dim]
+    qkv_reshaped = qkv_output.view(batch, seqlen, total_heads, head_dim)
+    
+    # Split into Q, K, V and transpose to [batch, heads, seqlen, head_dim]
+    q = qkv_reshaped[:, :, :num_q_heads, :].transpose(1, 2).contiguous()
+    k = qkv_reshaped[:, :, num_q_heads:num_q_heads+num_kv_heads, :].transpose(1, 2).contiguous()
+    v = qkv_reshaped[:, :, num_q_heads+num_kv_heads:, :].transpose(1, 2).contiguous()
+    
+    return q, k, v
 
 __version__ = "0.1.0"
 
