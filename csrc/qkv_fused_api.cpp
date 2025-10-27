@@ -6,6 +6,7 @@
 #include <ATen/cuda/CUDAContext.h>
 #include <c10/cuda/CUDAGuard.h>
 #include <cublas_v2.h>
+#include <cublasLt.h>
 
 #include "qkv_fused_params.h"
 
@@ -13,7 +14,7 @@ namespace qkv_fusion {
 
 // Forward declarations of CUDA kernel launchers
 // void run_qkv_fusion_fp16(QKVFusedParams &params, cudaStream_t stream);  // Not used
-void run_qkv_fusion_optimized(QKVFusedParams &params, cublasHandle_t cublas_handle, cudaStream_t stream);
+void run_qkv_fusion_optimized(QKVFusedParams &params, cublasLtHandle_t cublaslt_handle, cudaStream_t stream);
 
 // Python-facing function (baseline - not used, commented out)
 /*
@@ -149,14 +150,15 @@ std::vector<torch::Tensor> qkv_fused_forward_optimized(
     TORCH_CHECK(qkv_fused_weight.size(0) == hidden_dim, "qkv_fused_weight dim 0 must match hidden_dim");
     TORCH_CHECK(qkv_fused_weight.size(1) == qkv_out_dim, "qkv_fused_weight dim 1 mismatch");
     
-    // Allocate output tensors
+    // Allocate output tensor for raw GEMM result
     auto options = torch::TensorOptions()
         .dtype(torch::kFloat16)
         .device(hidden_states.device());
     
-    auto q_out = torch::empty({batch_size, num_q_heads, seqlen, head_dim}, options);
-    auto k_out = torch::empty({batch_size, num_kv_heads, seqlen, head_dim}, options);
-    auto v_out = torch::empty({batch_size, num_kv_heads, seqlen, head_dim}, options);
+    // Output shape: [batch, seqlen, qkv_out_dim]
+    // Python will reshape this to [batch, seqlen, total_heads, head_dim]
+    // then slice into Q, K, V
+    auto qkv_output = torch::empty({batch_size, seqlen, qkv_out_dim}, options);
     
     // Set up parameters
     QKVFusedParams params;
@@ -166,25 +168,8 @@ std::vector<torch::Tensor> qkv_fused_forward_optimized(
     params.qkv_fused_weight_ptr = qkv_fused_weight.data_ptr();
     params.qkv_fused_bias_ptr = qkv_fused_bias.has_value() ? qkv_fused_bias.value().data_ptr() : nullptr;
     
-    // Output pointers
-    params.q_out_ptr = q_out.data_ptr();
-    params.k_out_ptr = k_out.data_ptr();
-    params.v_out_ptr = v_out.data_ptr();
-    
-    // Strides for hidden states
-    params.hidden_batch_stride = hidden_states.stride(0);
-    params.hidden_row_stride = hidden_states.stride(1);
-    
-    // Strides for outputs
-    params.q_batch_stride = q_out.stride(0);
-    params.k_batch_stride = k_out.stride(0);
-    params.v_batch_stride = v_out.stride(0);
-    params.q_head_stride = q_out.stride(1);
-    params.k_head_stride = k_out.stride(1);
-    params.v_head_stride = v_out.stride(1);
-    params.q_row_stride = q_out.stride(2);
-    params.k_row_stride = k_out.stride(2);
-    params.v_row_stride = v_out.stride(2);
+    // Workspace pointer (output goes here)
+    params.workspace_ptr = qkv_output.data_ptr();
     
     // Dimensions
     params.batch_size = batch_size;
@@ -199,21 +184,22 @@ std::vector<torch::Tensor> qkv_fused_forward_optimized(
     params.has_bias = qkv_fused_bias.has_value();
     params.is_quantized = false;
     
-    // Allocate workspace buffer (managed by PyTorch, no manual cudaMalloc/Free!)
-    const int M = batch_size * seqlen;
-    const int N = qkv_out_dim;
-    auto workspace = torch::empty({M, N}, options);  // PyTorch manages this memory
-    params.workspace_ptr = workspace.data_ptr();
-    
-    // Get CUDA stream and cuBLAS handle
+    // Get CUDA stream and create cuBLASLt handle
     at::cuda::CUDAGuard device_guard(hidden_states.device());
     cudaStream_t stream = at::cuda::getCurrentCUDAStream();
-    cublasHandle_t cublas_handle = at::cuda::getCurrentCUDABlasHandle();
     
-    // Launch optimized kernel
-    run_qkv_fusion_optimized(params, cublas_handle, stream);
+    // Create cuBLASLt handle (lightweight, but ideally should be cached)
+    cublasLtHandle_t cublaslt_handle;
+    cublasLtCreate(&cublaslt_handle);
     
-    return {q_out, k_out, v_out};
+    // Launch optimized kernel (just GEMM with bias epilogue, no split)
+    run_qkv_fusion_optimized(params, cublaslt_handle, stream);
+    
+    // Cleanup
+    cublasLtDestroy(cublaslt_handle);
+    
+    // Return raw output - Python will do the reshaping (zero-copy!)
+    return qkv_output;
 }
 
 } // namespace qkv_fusion
