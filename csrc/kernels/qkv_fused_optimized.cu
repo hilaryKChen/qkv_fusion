@@ -9,6 +9,7 @@
  #include <cuda_runtime.h>
  #include <cuda_fp16.h>
  #include <cublas_v2.h>
+ #include <cublasLt.h>
  
  // CUTLASS includes for optimized GEMM
  // #include <cute/tensor.hpp>
@@ -33,11 +34,7 @@
   *   where M = batch_size * seq_len
   *         K = hidden_dim
   *         N = qkv_output_dim
-  ******************************************************************************/
- 
-#include <cublas_v2.h>
-#include <cublasLt.h>
-#include <cuda_fp16.h>
+ ******************************************************************************/
 
 // Optimized GEMM using cuBLASLt with bias epilogue fusion
 void launch_fused_qkv_gemm_cutlass(
