@@ -1,0 +1,47 @@
+================================================================================
+Testing Optimized QKV Fusion Correctness
+================================================================================
+Input shape: torch.Size([2, 128, 2048])
+Configuration: 32 Q heads, 4 KV heads, 128 head_dim
+
+Q proj weight shape: torch.Size([4096, 2048])
+K proj weight shape: torch.Size([512, 2048])
+V proj weight shape: torch.Size([512, 2048])
+
+[1] Running PyTorch baseline (3 nn.Linear)...
+Q baseline shape: torch.Size([2, 32, 128, 128])
+K baseline shape: torch.Size([2, 4, 128, 128])
+V baseline shape: torch.Size([2, 4, 128, 128])
+
+[2] Running optimized cuBLAS kernel...
+Fused weight shape: torch.Size([2048, 5120])
+Fused bias shape: torch.Size([5120])
+Q optimized shape: torch.Size([2, 32, 128, 128])
+K optimized shape: torch.Size([2, 4, 128, 128])
+V optimized shape: torch.Size([2, 4, 128, 128])
+
+[3] Comparing results...
+Q max absolute diff: nan
+K max absolute diff: nan
+V max absolute diff: nan
+Q mean relative error: nan
+K mean relative error: nan
+V mean relative error: nan
+
+✗ FAIL: Results differ too much!
+
+Debugging info:
+  Q sample values (baseline): tensor([ 0.7944,  0.3223, -0.6289, -0.2759,  0.6577], device='cuda:0',
+       dtype=torch.float16)
+  Q sample values (optimized): tensor([nan, nan, nan, nan, nan], device='cuda:0', dtype=torch.float16)
+
+Skipping benchmark due to correctness test failure.
+[LAYOUT] A order=1 rows=256 cols=2048 ld=2048
+[LAYOUT] B order=1 rows=2048 cols=5120 ld=5120
+[LAYOUT] C order=1 rows=256 cols=5120 ld=5120
+[LAYOUT] D order=1 rows=256 cols=5120 ld=5120
+[cuBLASLt] No algorithms for workspace cap 67108864 bytes
+[cuBLASLt] No algorithms for workspace cap 16777216 bytes
+[cuBLASLt] No algorithms for workspace cap 0 bytes
+[cuBLASLt] A=0x1551ebe00000 B=0x1551d2000000 D=0x1551d0a00000 bias=0x1551ebf82800 M=256 K=2048 N=5120 success=0 last_status=0
+cuBLASLt matmul failed; falling back to zeros (status=0)

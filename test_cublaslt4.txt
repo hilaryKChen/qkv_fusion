@@ -1,0 +1,40 @@
+================================================================================
+Testing Optimized QKV Fusion Correctness
+================================================================================
+Input shape: torch.Size([2, 128, 2048])
+Configuration: 32 Q heads, 4 KV heads, 128 head_dim
+
+Q proj weight shape: torch.Size([4096, 2048])
+K proj weight shape: torch.Size([512, 2048])
+V proj weight shape: torch.Size([512, 2048])
+
+[1] Running PyTorch baseline (3 nn.Linear)...
+Q baseline shape: torch.Size([2, 32, 128, 128])
+K baseline shape: torch.Size([2, 4, 128, 128])
+V baseline shape: torch.Size([2, 4, 128, 128])
+
+[2] Running optimized cuBLAS kernel...
+Fused weight shape: torch.Size([2048, 5120])
+Fused bias shape: torch.Size([5120])
+Q optimized shape: torch.Size([2, 32, 128, 128])
+K optimized shape: torch.Size([2, 4, 128, 128])
+V optimized shape: torch.Size([2, 4, 128, 128])
+
+[3] Comparing results...
+Q max absolute diff: 2.662109
+K max absolute diff: 2.585938
+V max absolute diff: 2.554688
+Q mean relative error: 1.000000
+K mean relative error: 1.000000
+V mean relative error: 1.000000
+
+✗ FAIL: Results differ too much!
+
+Debugging info:
+  Q sample values (baseline): tensor([ 0.7944,  0.3223, -0.6289, -0.2759,  0.6577], device='cuda:0',
+       dtype=torch.float16)
+  Q sample values (optimized): tensor([0., 0., 0., 0., 0.], device='cuda:0', dtype=torch.float16)
+
+Skipping benchmark due to correctness test failure.
+cuBLASLt heuristic failed, no algorithm found
+cuBLASLt heuristic failed even without workspace!
