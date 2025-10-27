@@ -12,10 +12,11 @@
 namespace qkv_fusion {
 
 // Forward declarations of CUDA kernel launchers
-void run_qkv_fusion_fp16(QKVFusedParams &params, cudaStream_t stream);
+// void run_qkv_fusion_fp16(QKVFusedParams &params, cudaStream_t stream);  // Not used
 void run_qkv_fusion_optimized(QKVFusedParams &params, cublasHandle_t cublas_handle, cudaStream_t stream);
 
-// Python-facing function
+// Python-facing function (baseline - not used, commented out)
+/*
 std::vector<torch::Tensor> qkv_fused_forward(
     torch::Tensor hidden_states,      // [batch, seqlen, hidden_dim]
     torch::Tensor q_weight,           // [hidden_dim, num_q_heads * head_dim]
@@ -123,6 +124,7 @@ std::vector<torch::Tensor> qkv_fused_forward(
     // Return Q, K, V tensors
     return {q_out, k_out, v_out};
 }
+*/
 
 // Optimized forward function using fused weights
 std::vector<torch::Tensor> qkv_fused_forward_optimized(
@@ -218,6 +220,8 @@ std::vector<torch::Tensor> qkv_fused_forward_optimized(
 
 // PyTorch bindings
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
+    // Baseline qkv_fused_forward is commented out (not used)
+    /*
     m.def("qkv_fused_forward", &qkv_fusion::qkv_fused_forward,
           "QKV Fused Forward Pass (FP16, Phase 1)",
           py::arg("hidden_states"),
@@ -231,6 +235,7 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
           py::arg("num_kv_heads"),
           py::arg("head_dim")
     );
+    */
     
     m.def("qkv_fused_forward_optimized", &qkv_fusion::qkv_fused_forward_optimized,
           "QKV Fused Forward Pass (Optimized with CUTLASS, Phase 2)",

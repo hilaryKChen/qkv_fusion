@@ -1,0 +1,41 @@
+================================================================================
+Testing Optimized QKV Fusion Correctness
+================================================================================
+Input shape: torch.Size([2, 128, 3584])
+Configuration: 32 Q heads, 4 KV heads, 128 head_dim
+
+Q proj weight shape: torch.Size([4096, 3584])
+K proj weight shape: torch.Size([512, 3584])
+V proj weight shape: torch.Size([512, 3584])
+
+[1] Running PyTorch baseline (3 nn.Linear)...
+Q baseline shape: torch.Size([2, 32, 128, 128])
+K baseline shape: torch.Size([2, 4, 128, 128])
+V baseline shape: torch.Size([2, 4, 128, 128])
+
+[2] Running optimized cuBLAS kernel...
+Fused weight shape: torch.Size([3584, 5120])
+Fused bias shape: torch.Size([5120])
+Q optimized shape: torch.Size([2, 32, 128, 128])
+K optimized shape: torch.Size([2, 4, 128, 128])
+V optimized shape: torch.Size([2, 4, 128, 128])
+
+[3] Comparing results...
+Q max absolute diff: 2.908203
+K max absolute diff: 2.529297
+V max absolute diff: 2.587891
+Q mean relative error: 1.077148
+K mean relative error: 1.052734
+V mean relative error: 1.090820
+
+✗ FAIL: Results differ too much!
+
+Debugging info:
+  Q sample values (baseline): tensor([ 0.4402, -0.8818,  0.5942,  0.5098,  0.2467], device='cuda:0',
+       dtype=torch.float16)
+  Q sample values (optimized): tensor([ 0.0081,  0.0127, -0.0159, -0.0133, -0.0149], device='cuda:0',
+       dtype=torch.float16)
+
+Skipping benchmark due to correctness test failure.
+ ** On entry to GEMM_EX  parameter number 9 had an illegal value
+cuBLAS GEMM failed with status: 7

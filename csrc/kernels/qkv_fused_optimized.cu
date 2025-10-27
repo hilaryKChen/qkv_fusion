@@ -76,6 +76,7 @@ void launch_fused_qkv_gemm_cutlass(
         qkv_weight,         // First matrix: qkv_weight^T[N, K] in column-major view
         CUDA_R_16F,
         N,                  // Leading dimension (rows in column-major = N)
+        // K,
         hidden_states,      // Second matrix: hidden_states^T[K, M] in column-major view
         CUDA_R_16F,
         K,                  // Leading dimension (rows in column-major = K)
