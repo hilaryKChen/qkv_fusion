@@ -64,7 +64,7 @@ attn_output = flash_attn_func(q, k, v, causal=True)
 3. **Custom split kernel:** Split + bias + transpose in one pass
 
 **Performance:**
-- Qwen3-7B config (batch=4, seq=512): **2.08x faster** than PyTorch
+- Qwen3-30B-A3B config (batch=4, seq=512): 
 - Reduces 3 GEMM launches → 1 GEMM + 1 lightweight kernel
 - Better memory reuse and tensor core utilization
 

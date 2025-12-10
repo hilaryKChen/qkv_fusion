@@ -10,11 +10,7 @@
  #include <cuda_fp16.h>
  #include <cublas_v2.h>
  
- // CUTLASS includes for optimized GEMM
- // #include <cute/tensor.hpp>
- // #include <cutlass/cutlass.h>
- // #include <cutlass/numeric_types.h>
- // #include <cutlass/gemm/device/gemm.h>
+
  
  #include "../qkv_fused_params.h"
  
@@ -23,7 +19,7 @@
  // using namespace cute;
  
  /******************************************************************************
-  * Kernel 1: Fused QKV GEMM using CUTLASS
+  * Kernel 1: Fused QKV GEMM using cuBLAS
   * Input:  hidden_states [batch * seq_len, hidden_dim]
   * Weight: qkv_weight [hidden_dim, (num_q_heads + 2*num_kv_heads) * head_dim]
   * Output: qkv_buf [batch * seq_len, (num_q_heads + 2*num_kv_heads) * head_dim]
@@ -39,7 +35,7 @@
  #include <cuda_fp16.h>
  
 // Optimized GEMM using cuBLAS with proper row-major handling
-void launch_fused_qkv_gemm_cutlass(
+void launch_fused_qkv_gemm_cublas(
     const half* hidden_states,      // [M, K] row-major
     const half* qkv_weight,         // [K, N] row-major
     half* qkv_buf,                  // [M, N] row-major
@@ -216,7 +212,7 @@ __global__ void split_qkv_bias_transpose_kernel_optimized(
      //
      // For Qwen3: M = batch*seq, K = 3584, N = 5120
      
-     launch_fused_qkv_gemm_cutlass(
+     launch_fused_qkv_gemm_cublas(
          reinterpret_cast<const half*>(params.hidden_states_ptr),
          reinterpret_cast<const half*>(params.qkv_fused_weight_ptr),
          qkv_buf,

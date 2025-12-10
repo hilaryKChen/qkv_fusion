@@ -7,11 +7,7 @@
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
 
-// CUTLASS includes
-// #include <cute/tensor.hpp>
-// #include <cutlass/cutlass.h>
-// #include <cutlass/numeric_types.h>
-// #include <cutlass/gemm/device/gemm.h>
+
 
 #include "../qkv_fused_params.h"
 
