@@ -17,7 +17,7 @@ Target Model: https://huggingface.co/Qwen/Qwen3-30B-A3B-GPTQ-Int4
 - Quantization: GPTQ 4-bit
 
 Usage:
-    # Default: benchmark Qwen3-30B-A3B-GPTQ-Int4
+    # Default: benchmark Qwen3-30B-A3B-GPTQ-Int4 (thinking mode DISABLED)
     python benchmark_qwen3_baseline.py
     
     # With custom model path
@@ -26,14 +26,18 @@ Usage:
     # Custom configuration
     python benchmark_qwen3_baseline.py --seq 1024 --gen-len 256
     
+    # Enable thinking mode (uses sampling, not greedy decoding)
+    python benchmark_qwen3_baseline.py --enable-thinking
+    
     # Save results
     python benchmark_qwen3_baseline.py --output results.json
 
 Prerequisites:
-    pip install transformers>=4.51.0 accelerate auto-gptq
+    pip install transformers>=4.51.0 accelerate gptqmodel
     
     Note: transformers>=4.51.0 is REQUIRED for Qwen3-MoE models!
     With older versions you'll get: KeyError: 'qwen3_moe'
+    Note: gptqmodel is the recommended replacement for deprecated auto-gptq
     
 Output:
     - Prefill latency (ms) and throughput (tokens/sec)
@@ -50,6 +54,8 @@ from dataclasses import dataclass
 import json
 import gc
 import numpy as np
+import os
+from datetime import datetime
 
 
 # Default model: Qwen3-30B-A3B-GPTQ-Int4
@@ -66,6 +72,7 @@ class BenchmarkConfig:
     warmup_iters: int = 3
     bench_iters: int = 10
     quantization: str = "gptq"  # Qwen3-30B-A3B-GPTQ-Int4 uses GPTQ
+    enable_thinking: bool = False  # Disable thinking mode for baseline benchmarking
     
     # Model dimensions for Qwen3-30B-A3B
     # These will be auto-populated from model config, but defaults match the model
@@ -131,6 +138,7 @@ def load_model(model_path: str, quantization: str = "gptq"):
     # Check transformers version
     check_transformers_version()
     
+    import sys
     print(f"\n{'='*60}")
     print(f"Loading model: {model_path}")
     print(f"Quantization: {quantization}")
@@ -141,8 +149,12 @@ def load_model(model_path: str, quantization: str = "gptq"):
     tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
+    print("✓ Tokenizer loaded")
+    sys.stdout.flush()
     
     # Load config
+    print("Loading model config...")
+    sys.stdout.flush()
     config = AutoConfig.from_pretrained(model_path, trust_remote_code=True)
     print(f"Model config: hidden_size={config.hidden_size}, num_layers={config.num_hidden_layers}")
     
@@ -155,29 +167,67 @@ def load_model(model_path: str, quantization: str = "gptq"):
     model = None
     
     if quantization == "gptq":
+        # Try gptqmodel first (recommended replacement for auto-gptq)
         try:
-            from transformers import AutoModelForCausalLM
-            print("Loading GPTQ model via transformers...")
-            model = AutoModelForCausalLM.from_pretrained(
+            from gptqmodel import GPTQModel
+            print("Loading GPTQ model via gptqmodel (optimized path)...")
+            import sys
+            sys.stdout.flush()
+            model = GPTQModel.from_quantized(
                 model_path,
                 device_map="auto",
                 trust_remote_code=True,
-                torch_dtype=torch.float16,
+                use_safetensors=True,
             )
-        except Exception as e:
-            print(f"Transformers GPTQ failed: {e}")
+        except (ImportError, Exception) as e:
+            print(f"gptqmodel failed: {e}")
+            print("Trying auto-gptq as fallback...")
+            import sys
+            sys.stdout.flush()
+            # Fallback to auto-gptq (deprecated but may work if compiled)
             try:
                 from auto_gptq import AutoGPTQForCausalLM
-                print("Loading GPTQ model via auto-gptq...")
+                print("Loading GPTQ model via auto-gptq (fallback)...")
+                sys.stdout.flush()
                 model = AutoGPTQForCausalLM.from_quantized(
                     model_path,
                     device_map="auto",
                     trust_remote_code=True,
                     use_safetensors=True,
                 )
-            except ImportError:
-                print("auto-gptq not installed. Install with: pip install auto-gptq")
-                raise
+            except (ImportError, Exception) as e2:
+                print(f"auto-gptq also failed: {e2}")
+                print("Trying transformers with GPTQ (simple official approach)...")
+                sys.stdout.flush()
+                # Final fallback: use transformers directly with GPTQ support
+                # Following official Qwen docs: https://qwen.readthedocs.io/en/latest/quantization/gptq.html
+                # Just use from_pretrained without custom quantization_config - model has it embedded
+                try:
+                    from transformers import AutoModelForCausalLM
+                    print("Loading GPTQ model via transformers (using model's built-in config)...")
+                    sys.stdout.flush()
+                    model = AutoModelForCausalLM.from_pretrained(
+                        model_path,
+                        device_map="auto",
+                        trust_remote_code=True,
+                        torch_dtype=torch.float16,
+                    )
+                except Exception as e3:
+                    print(f"transformers GPTQ also failed: {e3}")
+                    print("\n" + "="*60)
+                    print("ERROR: Failed to load GPTQ model")
+                    print("="*60)
+                    print(f"gptqmodel failed: {e}")
+                    print(f"auto-gptq failed: {e2}")
+                    print(f"transformers GPTQ failed: {e3}")
+                    print("\nPossible solutions:")
+                    print("1. Login to HuggingFace to download gptqmodel kernels:")
+                    print("   huggingface-cli login")
+                    print("\n2. Install auto-gptq with compiler workaround:")
+                    print("   export NVCC_PREPEND_FLAGS='--allow-unsupported-compiler'")
+                    print("   pip install auto-gptq --no-build-isolation")
+                    print("="*60)
+                    raise RuntimeError("Failed to load GPTQ model. All backends failed.") from e3
     
     elif quantization == "awq":
         try:
@@ -202,11 +252,14 @@ def load_model(model_path: str, quantization: str = "gptq"):
             torch_dtype=torch.float16,
         )
     
+    print("✓ Model loaded, setting to eval mode...")
+    sys.stdout.flush()
     model.eval()
     
     # Print memory usage
     mem_info = get_gpu_memory_info()
-    print(f"GPU Memory after loading: {mem_info.get('allocated_gb', 0):.2f} GB")
+    print(f"✓ GPU Memory after loading: {mem_info.get('allocated_gb', 0):.2f} GB")
+    sys.stdout.flush()
     
     return model, tokenizer, config
 
@@ -264,9 +317,18 @@ def benchmark_prefill(
     if prompt is None:
         prompt = "Hello, I am a helpful AI assistant. " * (config.seq_len // 10 + 1)
     
+    # Use chat template with thinking mode disabled for consistent benchmarking
+    messages = [{"role": "user", "content": prompt}]
+    text = tokenizer.apply_chat_template(
+        messages,
+        tokenize=False,
+        add_generation_prompt=False,  # Prefill doesn't need generation prompt
+        enable_thinking=config.enable_thinking
+    )
+    
     # Tokenize and truncate/pad to exact length
     inputs = tokenizer(
-        prompt,
+        text,
         return_tensors="pt",
         max_length=config.seq_len,
         truncation=True,
@@ -341,26 +403,60 @@ def benchmark_generation(
     if prompt is None:
         prompt = "Write a detailed explanation of"
     
-    inputs = tokenizer(prompt, return_tensors="pt")
+    # Use chat template with thinking mode disabled for consistent benchmarking
+    messages = [{"role": "user", "content": prompt}]
+    text = tokenizer.apply_chat_template(
+        messages,
+        tokenize=False,
+        add_generation_prompt=True,
+        enable_thinking=config.enable_thinking
+    )
+    inputs = tokenizer(text, return_tensors="pt")
     input_ids = inputs["input_ids"].to(device)
     prompt_len = input_ids.shape[1]
     
     print(f"Prompt length: {prompt_len} tokens")
     print(f"Generating: {config.gen_len} tokens")
     
+    # Generation parameters based on thinking mode
+    # Non-thinking mode: Temperature=0.7, TopP=0.8, TopK=20, MinP=0
+    # Thinking mode: Temperature=0.6, TopP=0.95, TopK=20, MinP=0 (but greedy NOT recommended)
+    # For baseline benchmarking with greedy decoding, use non-thinking mode settings
+    gen_kwargs = {
+        "max_new_tokens": config.gen_len,
+        "pad_token_id": tokenizer.pad_token_id,
+        "use_cache": True,
+    }
+    
+    if config.enable_thinking:
+        # Thinking mode: use sampling (greedy NOT recommended per docs)
+        gen_kwargs.update({
+            "do_sample": True,
+            "temperature": 0.6,
+            "top_p": 0.95,
+            "top_k": 20,
+        })
+    else:
+        # Non-thinking mode: can use greedy or sampling
+        # Using greedy for consistent baseline measurements
+        gen_kwargs.update({
+            "do_sample": False,
+        })
+    
     # Warmup
     print(f"\nWarming up...")
+    warmup_kwargs = gen_kwargs.copy()
+    warmup_kwargs["max_new_tokens"] = min(10, config.gen_len)
     with torch.no_grad():
-        _ = model.generate(
-            input_ids,
-            max_new_tokens=min(10, config.gen_len),
-            do_sample=False,
-            pad_token_id=tokenizer.pad_token_id,
-        )
+        _ = model.generate(input_ids, **warmup_kwargs)
     torch.cuda.synchronize()
     
     # Benchmark
     print(f"Benchmarking generation ({config.bench_iters} iterations)...")
+    if config.enable_thinking:
+        print(f"  Thinking mode: ENABLED (using sampling)")
+    else:
+        print(f"  Thinking mode: DISABLED (using greedy decoding)")
     times = []
     tokens_generated = []
     
@@ -368,19 +464,25 @@ def benchmark_generation(
         torch.cuda.synchronize()
         start = time.perf_counter()
         with torch.no_grad():
-            outputs = model.generate(
-                input_ids,
-                max_new_tokens=config.gen_len,
-                do_sample=False,
-                pad_token_id=tokenizer.pad_token_id,
-                use_cache=True,
-            )
+            outputs = model.generate(input_ids, **gen_kwargs)
         torch.cuda.synchronize()
         elapsed = (time.perf_counter() - start) * 1000
         
         num_new_tokens = outputs.shape[1] - prompt_len
         times.append(elapsed)
         tokens_generated.append(num_new_tokens)
+        
+        # Parse thinking content if enabled (for verification)
+        if config.enable_thinking:
+            output_ids = outputs[0][prompt_len:].tolist()
+            try:
+                # Find </think> token (151668)
+                index = len(output_ids) - output_ids[::-1].index(151668) if 151668 in output_ids else 0
+                thinking_len = index
+                actual_content_len = len(output_ids) - index
+            except ValueError:
+                thinking_len = 0
+                actual_content_len = num_new_tokens
     
     times = np.array(times)
     tokens_generated = np.array(tokens_generated)
@@ -399,6 +501,7 @@ def benchmark_generation(
         "tokens_per_second": avg_tokens / (avg_time / 1000) if avg_time > 0 else 0,
         "std_ms": float(np.std(times)),
         "samples": times.tolist(),
+        "enable_thinking": config.enable_thinking,
     }
     
     print(f"\nGeneration Results:")
@@ -636,6 +739,8 @@ def print_summary(
     
     print(f"\n{'Generation Performance (Per-Token Latency)':-^60}")
     if gen_result:
+        thinking_status = "ENABLED" if gen_result.get('enable_thinking', False) else "DISABLED"
+        print(f"  Thinking mode: {thinking_status}")
         print(f"  Total time ({gen_result['actual_tokens_generated']:.0f} tokens): {gen_result['total_time_ms']:.2f} ms")
         print(f"  Per-token latency: {gen_result['per_token_ms']:.2f} ms/token")
         print(f"  Throughput: {gen_result['tokens_per_second']:.1f} tokens/sec")
@@ -694,7 +799,7 @@ Examples:
   python benchmark_qwen3_baseline.py --output results.json
 
 Prerequisites:
-  pip install transformers>=4.51.0 accelerate auto-gptq
+  pip install transformers>=4.51.0 accelerate gptqmodel
         """
     )
     
@@ -713,9 +818,12 @@ Prerequisites:
     parser.add_argument("--gen-len", type=int, default=128, help="Number of tokens to generate")
     parser.add_argument("--warmup", type=int, default=3, help="Warmup iterations")
     parser.add_argument("--iters", type=int, default=10, help="Benchmark iterations")
+    parser.add_argument("--enable-thinking", action="store_true", 
+                        help="Enable thinking mode (default: False for baseline benchmarking)")
     
     # Output
-    parser.add_argument("--output", type=str, default=None, help="Output JSON file")
+    parser.add_argument("--output", type=str, default=None, 
+                        help="Output JSON file path or directory (if directory, creates timestamped file)")
     parser.add_argument("--prompt", type=str, default=None, help="Custom prompt for benchmarking")
     
     args = parser.parse_args()
@@ -740,6 +848,7 @@ Prerequisites:
         warmup_iters=args.warmup,
         bench_iters=args.iters,
         quantization=args.quantization,
+        enable_thinking=args.enable_thinking,
     )
     
     # Load model
@@ -795,9 +904,21 @@ Prerequisites:
             'generation': gen_result,
             'layer_breakdown': layer_result,
         }
-        with open(args.output, 'w') as f:
+
+        # Handle both directory and file paths
+        output_path = args.output
+        if os.path.isdir(output_path) or (not os.path.exists(output_path) and not output_path.endswith('.json')):
+            # It's a directory or path without extension - create directory and generate filename
+            os.makedirs(output_path, exist_ok=True)
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            output_path = os.path.join(output_path, f"benchmark_qwen3_{timestamp}.json")
+        elif not os.path.exists(os.path.dirname(output_path)) and os.path.dirname(output_path):
+            # File path but directory doesn't exist - create it
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        
+        with open(output_path, 'w') as f:
             json.dump(all_results, f, indent=2)
-        print(f"\nResults saved to: {args.output}")
+        print(f"\nResults saved to: {output_path}")
     
     # Clean up
     del model
