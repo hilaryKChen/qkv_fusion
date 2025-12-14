@@ -1,0 +1,49 @@
+# Requirements for new machine with PyTorch 2.5.1 + CUDA 12.4
+# Core ML libraries (install PyTorch separately first!)
+accelerate==1.11.0
+transformers==4.57.1
+optimum==2.0.0
+
+# GPTQ support - MUST install with CUDA extensions
+auto_gptq==0.7.1  # Install with: pip install auto-gptq --no-build-isolation
+
+# Flash Attention (will compile from source if needed)
+# flash-attn  # Install separately: pip install flash-attn --no-build-isolation
+
+# QKV Fusion (your custom package)
+git+https://github.com/hilaryKChen/qkv_fusion.git@e57029270e09637cd86159df9a8a2345a84c0680
+
+# Core dependencies
+datasets==4.3.0
+safetensors==0.6.2
+huggingface-hub==0.36.0
+tokenizers==0.22.1
+peft==0.17.1
+
+# Utilities
+einops==0.8.1
+tqdm==4.67.1
+numpy==2.2.6
+pandas==2.3.3
+
+# Development tools
+pytest==8.4.2
+autopep8==2.3.2
+
+# Others
+bitsandbytes==0.48.1
+Device-SMI==0.5.3
+dill==0.4.0
+fsspec==2025.9.0
+hf_transfer==0.1.9
+gekko==1.3.0
+kernels==0.11.3
+LogBar==0.1.9
+maturin==1.10.2
+ninja==1.13.0
+random_word==1.0.13
+rouge==1.0.1
+sentencepiece==0.2.1
+tokenicer==0.0.5
+torchao==0.14.1
+
