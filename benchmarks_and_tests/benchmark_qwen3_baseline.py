@@ -47,7 +47,6 @@ Output:
 """
 
 import argparse
-import time
 import torch
 from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass
@@ -133,7 +132,7 @@ def load_model(model_path: str, quantization: str = "gptq"):
     Returns:
         model, tokenizer, model_config
     """
-    from transformers import AutoTokenizer, AutoConfig
+    from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
     
     # Check transformers version
     check_transformers_version()
@@ -166,90 +165,111 @@ def load_model(model_path: str, quantization: str = "gptq"):
     # Load model based on quantization type
     model = None
     
-    if quantization == "gptq":
-        # Try gptqmodel first (recommended replacement for auto-gptq)
-        try:
-            from gptqmodel import GPTQModel
-            print("Loading GPTQ model via gptqmodel (optimized path)...")
-            import sys
-            sys.stdout.flush()
-            model = GPTQModel.from_quantized(
-                model_path,
-                device_map="auto",
-                trust_remote_code=True,
-                use_safetensors=True,
-            )
-        except (ImportError, Exception) as e:
-            print(f"gptqmodel failed: {e}")
-            print("Trying auto-gptq as fallback...")
-            import sys
-            sys.stdout.flush()
-            # Fallback to auto-gptq (deprecated but may work if compiled)
-            try:
-                from auto_gptq import AutoGPTQForCausalLM
-                print("Loading GPTQ model via auto-gptq (fallback)...")
-                sys.stdout.flush()
-                model = AutoGPTQForCausalLM.from_quantized(
-                    model_path,
-                    device_map="auto",
-                    trust_remote_code=True,
-                    use_safetensors=True,
-                )
-            except (ImportError, Exception) as e2:
-                print(f"auto-gptq also failed: {e2}")
-                print("Trying transformers with GPTQ (simple official approach)...")
-                sys.stdout.flush()
-                # Final fallback: use transformers directly with GPTQ support
-                # Following official Qwen docs: https://qwen.readthedocs.io/en/latest/quantization/gptq.html
-                # Just use from_pretrained without custom quantization_config - model has it embedded
-                try:
-                    from transformers import AutoModelForCausalLM
-                    print("Loading GPTQ model via transformers (using model's built-in config)...")
-                    sys.stdout.flush()
-                    model = AutoModelForCausalLM.from_pretrained(
-                        model_path,
-                        device_map="auto",
-                        trust_remote_code=True,
-                        torch_dtype=torch.float16,
-                    )
-                except Exception as e3:
-                    print(f"transformers GPTQ also failed: {e3}")
-                    print("\n" + "="*60)
-                    print("ERROR: Failed to load GPTQ model")
-                    print("="*60)
-                    print(f"gptqmodel failed: {e}")
-                    print(f"auto-gptq failed: {e2}")
-                    print(f"transformers GPTQ failed: {e3}")
-                    print("\nPossible solutions:")
-                    print("1. Login to HuggingFace to download gptqmodel kernels:")
-                    print("   huggingface-cli login")
-                    print("\n2. Install auto-gptq with compiler workaround:")
-                    print("   export NVCC_PREPEND_FLAGS='--allow-unsupported-compiler'")
-                    print("   pip install auto-gptq --no-build-isolation")
-                    print("="*60)
-                    raise RuntimeError("Failed to load GPTQ model. All backends failed.") from e3
+    # if quantization == "gptq":
+    #     # Try gptqmodel first (recommended replacement for auto-gptq)
+    #     try:
+    #         from gptqmodel import GPTQModel
+    #         print("Loading GPTQ model via gptqmodel (optimized path)...")
+    #         import sys
+    #         sys.stdout.flush()
+    #         model = GPTQModel.from_quantized(
+    #             model_path,
+    #             device_map="auto",
+    #             trust_remote_code=True,
+    #             use_safetensors=True,
+    #         )
+    #     except (ImportError, Exception) as e:
+    #         print(f"gptqmodel failed: {e}")
+    #         print("Trying auto-gptq as fallback...")
+    #         import sys
+    #         sys.stdout.flush()
+    #         # Fallback to auto-gptq (deprecated but may work if compiled)
+    #         try:
+    #             from auto_gptq import AutoGPTQForCausalLM
+    #             print("Loading GPTQ model via auto-gptq (fallback)...")
+    #             sys.stdout.flush()
+    #             model = AutoGPTQForCausalLM.from_quantized(
+    #                 model_path,
+    #                 device_map="auto",
+    #                 trust_remote_code=True,
+    #                 use_safetensors=True,
+    #             )
+    #         except (ImportError, Exception) as e2:
+    #             print(f"auto-gptq also failed: {e2}")
+    #             print("Trying transformers with GPTQ (simple official approach)...")
+    #             sys.stdout.flush()
+    #             # Final fallback: use transformers directly with GPTQ support
+    #             # Following official Qwen docs: https://qwen.readthedocs.io/en/latest/quantization/gptq.html
+    #             # Just use from_pretrained without custom quantization_config - model has it embedded
+    #             try:
+    #                 from transformers import AutoModelForCausalLM
+    #                 print("Loading GPTQ model via transformers (using model's built-in config)...")
+    #                 sys.stdout.flush()
+    #                 model = AutoModelForCausalLM.from_pretrained(
+    #                     model_path,
+    #                     device_map="auto",
+    #                     trust_remote_code=True,
+    #                     torch_dtype=torch.float16,
+    #                 )
+    #             except Exception as e3:
+    #                 print(f"transformers GPTQ also failed: {e3}")
+    #                 print("\n" + "="*60)
+    #                 print("ERROR: Failed to load GPTQ model")
+    #                 print("="*60)
+    #                 print(f"gptqmodel failed: {e}")
+    #                 print(f"auto-gptq failed: {e2}")
+    #                 print(f"transformers GPTQ failed: {e3}")
+    #                 print("\nPossible solutions:")
+    #                 print("1. Login to HuggingFace to download gptqmodel kernels:")
+    #                 print("   huggingface-cli login")
+    #                 print("\n2. Install auto-gptq with compiler workaround:")
+    #                 print("   export NVCC_PREPEND_FLAGS='--allow-unsupported-compiler'")
+    #                 print("   pip install auto-gptq --no-build-isolation")
+    #                 print("="*60)
+    #                 raise RuntimeError("Failed to load GPTQ model. All backends failed.") from e3
     
-    elif quantization == "awq":
-        try:
-            from awq import AutoAWQForCausalLM
-            print("Loading AWQ model...")
-            model = AutoAWQForCausalLM.from_quantized(
-                model_path,
-                fuse_layers=True,
-                trust_remote_code=True,
-            )
-        except ImportError:
-            print("autoawq not installed. Install with: pip install autoawq")
-            raise
+    # elif quantization == "awq":
+    #     try:
+    #         from awq import AutoAWQForCausalLM
+    #         print("Loading AWQ model...")
+    #         model = AutoAWQForCausalLM.from_quantized(
+    #             model_path,
+    #             fuse_layers=True,
+    #             trust_remote_code=True,
+    #         )
+    #     except ImportError:
+    #         print("autoawq not installed. Install with: pip install autoawq")
+    #         raise
     
-    else:  # none or fp16
-        from transformers import AutoModelForCausalLM
-        print("Loading FP16 model...")
+    # else:  # none or fp16
+    #     from transformers import AutoModelForCausalLM
+    #     print("Loading FP16 model...")
+    #     model = AutoModelForCausalLM.from_pretrained(
+    #         model_path,
+    #         device_map="auto",
+    #         trust_remote_code=True,
+    #         torch_dtype=torch.float16,
+    #     )
+
+    # For GPTQ MoE models, use GPTQModel directly with EXLLAMA_V2 backend
+    # Marlin backend fails on unquantized MoE gate layers (b_q_weight type is not kInt)
+    try:
+        from gptqmodel import GPTQModel, BACKEND
+        print("Loading with GPTQModel (EXLLAMA_V2 backend)...")
+        sys.stdout.flush()
+        model = GPTQModel.load(
+            model_path,
+            device_map="auto",
+            # backend=BACKEND.EXLLAMA_V2,
+            backend=BACKEND.MARLIN,
+        )
+    except Exception as e:
+        print(f"GPTQModel load failed ({e}), falling back to AutoModelForCausalLM...")
+        sys.stdout.flush()
         model = AutoModelForCausalLM.from_pretrained(
             model_path,
             device_map="auto",
-            trust_remote_code=True,
-            torch_dtype=torch.float16,
+            torch_dtype="auto",
         )
     
     print("✓ Model loaded, setting to eval mode...")
@@ -351,14 +371,14 @@ def benchmark_prefill(
     # Benchmark
     print(f"Benchmarking prefill ({config.bench_iters} iterations)...")
     times = []
+    starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
     for _ in range(config.bench_iters):
-        torch.cuda.synchronize()
-        start = time.perf_counter()
+        starter.record()
         with torch.no_grad():
             outputs = model(input_ids, attention_mask=attention_mask, use_cache=True)
+        ender.record()
         torch.cuda.synchronize()
-        elapsed = (time.perf_counter() - start) * 1000
-        times.append(elapsed)
+        times.append(starter.elapsed_time(ender))
     
     times = np.array(times)
     
@@ -377,6 +397,107 @@ def benchmark_prefill(
     print(f"  Latency: {result['mean_ms']:.2f} ± {result['std_ms']:.2f} ms")
     print(f"  Throughput: {result['tokens_per_second']:.0f} tokens/sec")
     print(f"  Per-token: {result['mean_ms']/actual_seq_len*1000:.2f} µs/token")
+    
+    return result
+
+
+@torch.inference_mode()
+def measure_decode_ms_per_tok(
+    model,
+    tokenizer,
+    config: BenchmarkConfig,
+    prompt: str = None,
+    warmup: int = 5
+) -> Dict[str, Any]:
+    """
+    Benchmark per-token decode latency (excludes prefill).
+    
+    This measures true decode performance by separating prefill from generation
+    and timing each decode step individually using CUDA events.
+    """
+    print("\n" + "=" * 60)
+    print("DECODE BENCHMARK (Per-Token Latency, Prefill Excluded)")
+    print("=" * 60)
+    
+    device = next(model.parameters()).device
+    
+    # Prepare prompt
+    if prompt is None:
+        prompt = "Write a detailed explanation of"
+    
+    messages = [{"role": "user", "content": prompt}]
+    text = tokenizer.apply_chat_template(
+        messages,
+        tokenize=False,
+        add_generation_prompt=True,
+        enable_thinking=config.enable_thinking
+    )
+    inputs = tokenizer(text, return_tensors="pt")
+    input_ids = inputs["input_ids"].to(device)
+    attention_mask = inputs["attention_mask"].to(device)
+    prompt_len = input_ids.shape[1]
+    
+    print(f"Prompt length: {prompt_len} tokens")
+    print(f"Decoding: {config.gen_len} tokens")
+    print(f"Warmup steps: {warmup}")
+    
+    # Prefill once to get KV cache (not timed)
+    print("\nRunning prefill (not timed)...")
+    out = model(input_ids=input_ids, attention_mask=attention_mask, use_cache=True)
+    past = out.past_key_values
+    next_token = out.logits[:, -1:].argmax(dim=-1)  # greedy next token
+    torch.cuda.synchronize()
+    
+    # Warmup decode steps (not timed)
+    print(f"Warming up decode ({warmup} steps)...")
+    for _ in range(warmup):
+        out = model(input_ids=next_token, use_cache=True, past_key_values=past)
+        past = out.past_key_values
+        next_token = out.logits[:, -1:].argmax(dim=-1)
+    torch.cuda.synchronize()
+    
+    # Benchmark decode steps
+    print(f"Benchmarking decode ({config.gen_len} tokens)...")
+    starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
+    times_ms = []
+    
+    for _ in range(config.gen_len):
+        starter.record()
+        out = model(input_ids=next_token, use_cache=True, past_key_values=past)
+        ender.record()
+        torch.cuda.synchronize()
+        
+        past = out.past_key_values
+        next_token = out.logits[:, -1:].argmax(dim=-1)
+        times_ms.append(starter.elapsed_time(ender))
+    
+    # Calculate statistics
+    times_ms = np.array(times_ms)
+    per_token_ms = float(np.mean(times_ms))
+    total_time_ms = float(np.sum(times_ms))
+    tokens_per_second = 1000.0 / per_token_ms if per_token_ms > 0 else 0
+    
+    result = {
+        "name": "decode",
+        "gen_len": config.gen_len,
+        "actual_tokens_generated": float(config.gen_len),
+        "total_time_ms": total_time_ms,
+        "per_token_ms": per_token_ms,
+        "tokens_per_second": tokens_per_second,
+        "std_ms": float(np.std(times_ms)),
+        "min_ms": float(np.min(times_ms)),
+        "max_ms": float(np.max(times_ms)),
+        "samples": times_ms.tolist(),
+        "enable_thinking": config.enable_thinking,
+        "prompt_len": prompt_len,
+        "warmup_steps": warmup,
+    }
+    
+    print(f"\nDecode Results:")
+    print(f"  Per-token latency: {result['per_token_ms']:.3f} ± {result['std_ms']:.3f} ms")
+    print(f"  Min/Max: {result['min_ms']:.3f} / {result['max_ms']:.3f} ms")
+    print(f"  Throughput: {result['tokens_per_second']:.1f} tokens/sec")
+    print(f"  Total decode time: {result['total_time_ms']:.2f} ms")
     
     return result
 
@@ -459,18 +580,21 @@ def benchmark_generation(
         print(f"  Thinking mode: DISABLED (using greedy decoding)")
     times = []
     tokens_generated = []
+    starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
     
     for i in range(config.bench_iters):
-        torch.cuda.synchronize()
-        start = time.perf_counter()
+        print(f"  Iteration {i+1}/{config.bench_iters}...", end=" ", flush=True)
+        starter.record()
         with torch.no_grad():
             outputs = model.generate(input_ids, **gen_kwargs)
+        ender.record()
         torch.cuda.synchronize()
-        elapsed = (time.perf_counter() - start) * 1000
+        elapsed = starter.elapsed_time(ender)
         
         num_new_tokens = outputs.shape[1] - prompt_len
         times.append(elapsed)
         tokens_generated.append(num_new_tokens)
+        print(f"{elapsed/1000:.1f}s ({num_new_tokens} tokens)", flush=True)
         
         # Parse thinking content if enabled (for verification)
         if config.enable_thinking:
@@ -600,8 +724,13 @@ def profile_attention_layers(
     print(f"\nMeasuring layer timing ({config.bench_iters} iterations)...")
     
     # Get hidden states by running through embedding
+    # Handle different model structures (GPTQModel wrapper, HF models, etc.)
     with torch.no_grad():
-        if hasattr(model, 'model'):
+        if hasattr(model, 'model') and hasattr(model.model, 'model') and hasattr(model.model.model, 'embed_tokens'):
+            # GPTQModel wrapper: model.model.model.embed_tokens
+            embed = model.model.model.embed_tokens(input_ids)
+        elif hasattr(model, 'model') and hasattr(model.model, 'embed_tokens'):
+            # Standard HF model: model.model.embed_tokens
             embed = model.model.embed_tokens(input_ids)
         elif hasattr(model, 'transformer'):
             embed = model.transformer.wte(input_ids)
@@ -614,13 +743,14 @@ def profile_attention_layers(
                     _ = model(input_ids, attention_mask=attention_mask)
             torch.cuda.synchronize()
             
+            starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
             for _ in range(config.bench_iters):
-                torch.cuda.synchronize()
-                start = time.perf_counter()
+                starter.record()
                 with torch.no_grad():
                     _ = model(input_ids, attention_mask=attention_mask)
+                ender.record()
                 torch.cuda.synchronize()
-                times.append((time.perf_counter() - start) * 1000)
+                times.append(starter.elapsed_time(ender))
             
             times = np.array(times)
             num_layers = len(attention_modules)
@@ -644,15 +774,16 @@ def profile_attention_layers(
                 _ = first_attn.v_proj(hidden_states)
         torch.cuda.synchronize()
         
+        starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
         for _ in range(config.bench_iters):
-            torch.cuda.synchronize()
-            start = time.perf_counter()
+            starter.record()
             with torch.no_grad():
                 q = first_attn.q_proj(hidden_states)
                 k = first_attn.k_proj(hidden_states)
                 v = first_attn.v_proj(hidden_states)
+            ender.record()
             torch.cuda.synchronize()
-            qkv_times.append((time.perf_counter() - start) * 1000)
+            qkv_times.append(starter.elapsed_time(ender))
         
         qkv_times = np.array(qkv_times)
         layer_times['qkv_proj'] = {
@@ -668,15 +799,24 @@ def profile_attention_layers(
         print("  Profiling output projection...")
         batch, seq, _ = hidden_states.shape
         
-        if hasattr(first_attn, 'num_heads'):
-            num_heads = first_attn.num_heads
+        # Get the actual input features from o_proj layer
+        o_proj = first_attn.o_proj
+        if hasattr(o_proj, 'in_features'):
+            o_proj_in_features = o_proj.in_features
+        elif hasattr(o_proj, 'infeatures'):  # GPTQ layers use 'infeatures'
+            o_proj_in_features = o_proj.infeatures
         else:
-            num_heads = config.num_q_heads if config.num_q_heads > 0 else 28
-        
-        head_dim = hidden_states.shape[-1] // num_heads if num_heads > 0 else config.head_dim
+            # Fallback: use num_attention_heads * head_dim (Qwen3-30B-A3B defaults)
+            # From config: num_attention_heads=32, head_dim=128, so o_proj input = 4096
+            if hasattr(first_attn, 'num_heads'):
+                num_heads = first_attn.num_heads
+            else:
+                num_heads = config.num_q_heads if config.num_q_heads > 0 else 32  # Qwen3 MoE default
+            head_dim = config.head_dim if config.head_dim > 0 else 128  # Qwen3 MoE default
+            o_proj_in_features = num_heads * head_dim
         
         dummy_attn_out = torch.randn(
-            batch, seq, num_heads * head_dim,
+            batch, seq, o_proj_in_features,
             device=hidden_states.device,
             dtype=hidden_states.dtype
         )
@@ -687,13 +827,14 @@ def profile_attention_layers(
                 _ = first_attn.o_proj(dummy_attn_out)
         torch.cuda.synchronize()
         
+        starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
         for _ in range(config.bench_iters):
-            torch.cuda.synchronize()
-            start = time.perf_counter()
+            starter.record()
             with torch.no_grad():
                 _ = first_attn.o_proj(dummy_attn_out)
+            ender.record()
             torch.cuda.synchronize()
-            o_times.append((time.perf_counter() - start) * 1000)
+            o_times.append(starter.elapsed_time(ender))
         
         o_times = np.array(o_times)
         layer_times['o_proj'] = {
@@ -879,6 +1020,7 @@ Prerequisites:
     
     # Run benchmarks
     prefill_result = benchmark_prefill(model, tokenizer, config, args.prompt)
+    # gen_result = measure_decode_ms_per_tok(model, tokenizer, config, args.prompt)
     gen_result = benchmark_generation(model, tokenizer, config, args.prompt)
     layer_result = benchmark_layer_breakdown(model, tokenizer, config)
     
@@ -928,3 +1070,22 @@ Prerequisites:
 
 if __name__ == "__main__":
     main()
+
+
+"""
+python /root/proj/qkv_fusion/benchmarks_and_tests/benchmark_qwen3_baseline.py
+
+# custom seq/gen lengths
+python /root/proj/qkv_fusion/benchmarks_and_tests/benchmark_qwen3_baseline.py --seq 1024 --gen-len 256
+
+# enable thinking mode
+python /root/proj/qkv_fusion/benchmarks_and_tests/benchmark_qwen3_baseline.py --enable-thinking
+
+# save results (file)
+python /root/proj/qkv_fusion/benchmarks_and_tests/benchmark_qwen3_baseline.py --output /root/results.json
+
+# save results (directory -> timestamped json)
+python /root/proj/qkv_fusion/benchmarks_and_tests/benchmark_qwen3_baseline.py \
+    --output /root/proj/qkv_fusion/benchmarks_and_tests/results_qwen3_bench \
+        --model-path /root/autodl-tmp/checkpoints/Qwen3-30B-A3B-GPTQ-Int4 \
+"""
