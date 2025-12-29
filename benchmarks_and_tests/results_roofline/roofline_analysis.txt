@@ -1,0 +1,110 @@
+[roofline_analysis] timestamp=2025-12-28T22:38:20
+[roofline_analysis] argv=/root/proj/qkv_fusion/benchmarks_and_tests/roofline_analysis.py --measure
+
+================================================================================
+QKV Fusion Project - Roofline Model Analysis
+================================================================================
+Detected GPU: NVIDIA A100-PCIE-40GB
+Matched to: NVIDIA A100
+
+Configuration:
+  Batch size: 1
+  Sequence length: 512
+  Hidden dimension: 2048
+  Q heads: 32, KV heads: 4
+  Head dimension: 128
+
+Measuring actual hardware performance...
+  Benchmarking memory bandwidth...
+    -> 1204.9 GB/s
+  Benchmarking FP16 compute...
+    -> 148.4 TFLOPS
+
+================================================================================
+ROOFLINE MODEL ANALYSIS
+================================================================================
+
+--------------------------------GPU Information---------------------------------
+  Device: NVIDIA A100
+  Compute Capability: 8.0
+  Peak FP16 Compute: 312.0 TFLOPS (Tensor Core)
+  Peak Memory BW: 2039 GB/s
+  Ridge Point: 153.0 FLOPs/Byte
+
+------------------------------Measured Performance------------------------------
+  Memory Bandwidth: 1204.9 GB/s (59.1% of peak)
+  FP16 Compute: 148.4 TFLOPS (47.6% of peak)
+
+-------------------------------Operation Analysis-------------------------------
+
+  [qkv_proj]
+    Operation: QKV Projection [512x2048] @ [2048x5120]
+    FLOPs: 10.74 GFLOP
+    Memory: 23.1 MB read, 5.2 MB write
+    Arithmetic Intensity: 379.21 FLOPs/Byte
+    Bound: COMPUTE BOUND
+    Theoretical Min Time: 34.42 µs
+
+  [attn_scores]
+    Operation: Attention Scores (Q@K^T) [512x128]@[128x512]
+    FLOPs: 2.15 GFLOP
+    Memory: 8.4 MB read, 16.8 MB write
+    Arithmetic Intensity: 85.33 FLOPs/Byte
+    Bound: MEMORY BOUND (by 2x below ridge point)
+    Theoretical Min Time: 12.34 µs
+
+  [attn_output]
+    Operation: Attention Output (softmax@V)
+    FLOPs: 2.19 GFLOP
+    Memory: 21.0 MB read, 4.2 MB write
+    Arithmetic Intensity: 87.00 FLOPs/Byte
+    Bound: MEMORY BOUND (by 2x below ridge point)
+    Theoretical Min Time: 12.34 µs
+
+  [out_proj]
+    Operation: Output Projection [512x4096] @ [4096x2048]
+    FLOPs: 8.59 GFLOP
+    Memory: 21.0 MB read, 2.1 MB write
+    Arithmetic Intensity: 372.36 FLOPs/Byte
+    Bound: COMPUTE BOUND
+    Theoretical Min Time: 27.53 µs
+
+-----------------------------Total Attention Layer------------------------------
+  Total FLOPs: 23.67 GFLOP
+  Total Memory: 101.7 MB
+  Overall Arithmetic Intensity: 232.66 FLOPs/Byte
+  Theoretical Min Time: 86.64 µs
+
+-----------------------------Optimization Guidance------------------------------
+  Most Memory-Bound Operation: attn_scores
+    -> AI = 85.33 FLOPs/Byte
+
+  RECOMMENDATION: Focus on MEMORY OPTIMIZATION
+    - Reduce memory traffic (fusion, caching)
+    - Improve memory access patterns (coalescing)
+    - Use larger batch sizes to amortize overhead
+
+================================================================================
+
+================================================================================
+QKV PROJECTION SPECIFIC ANALYSIS
+================================================================================
+
+This is your optimization target:
+  Operation: QKV Projection [512x2048] @ [2048x5120]
+  FLOPs: 10.74 GFLOP
+  Arithmetic Intensity: 379.21 FLOPs/Byte
+
+  Theoretical bounds:
+    - Memory-bound time: 0.01 µs
+    - Compute-bound time: 0.03 µs
+    - Expected min time: 34.42 µs
+
+  Your baseline (PyTorch 3x nn.Linear): 73.0 µs
+  Theoretical efficiency: 47.2%
+
+  ⚠️  There's 53% room for improvement!
+     But this doesn't mean you can achieve it with custom kernels.
+     PyTorch uses highly optimized cuBLASLt with epilogue fusion.
+
+================================================================================

@@ -29,6 +29,10 @@ Example output:
 """
 
 import argparse
+import contextlib
+import datetime as _dt
+from pathlib import Path
+import sys
 import torch
 import time
 from dataclasses import dataclass
@@ -111,6 +115,22 @@ GPU_SPECS = {
         sm_count=82
     ),
 }
+
+class _TeeIO:
+    """File-like object that writes to multiple streams (e.g., stdout + file)."""
+
+    def __init__(self, *streams):
+        self._streams = [s for s in streams if s is not None]
+
+    def write(self, data):
+        for s in self._streams:
+            s.write(data)
+        return len(data)
+
+    def flush(self):
+        for s in self._streams:
+            s.flush()
+
 
 
 def detect_gpu() -> GPUSpecs:
@@ -492,93 +512,119 @@ def print_roofline_analysis(
 
 def main():
     parser = argparse.ArgumentParser(description="Roofline Model Analysis for QKV Fusion")
-    parser.add_argument("--batch", type=int, default=4, help="Batch size")
+    parser.add_argument("--batch", type=int, default=1, help="Batch size")
     parser.add_argument("--seq", type=int, default=512, help="Sequence length")
-    parser.add_argument("--hidden", type=int, default=3584, help="Hidden dimension (Qwen3-7B: 3584)")
-    parser.add_argument("--q-heads", type=int, default=28, help="Number of Q heads (Qwen3-7B: 28)")
-    parser.add_argument("--kv-heads", type=int, default=4, help="Number of KV heads (Qwen3-7B: 4)")
+    parser.add_argument("--hidden", type=int, default=2048, help="Hidden dimension (Qwen3-30B: 2048)")
+    parser.add_argument("--q-heads", type=int, default=32, help="Number of Q heads (Qwen3-30B: 32)")
+    parser.add_argument("--kv-heads", type=int, default=4, help="Number of KV heads (Qwen3-30B: 4)")
     parser.add_argument("--head-dim", type=int, default=128, help="Head dimension")
     parser.add_argument("--measure", action="store_true", help="Measure actual HW performance")
     parser.add_argument("--gpu", type=str, default=None, 
                         help="GPU type override (H800, H100, A100, 4090, etc.)")
-    args = parser.parse_args()
-    
-    print("=" * 80)
-    print("QKV Fusion Project - Roofline Model Analysis")
-    print("=" * 80)
-    
-    # Detect or set GPU
-    if args.gpu and args.gpu.upper() in GPU_SPECS:
-        gpu = GPU_SPECS[args.gpu.upper()]
-        print(f"Using specified GPU: {gpu.name}")
-    else:
-        gpu = detect_gpu()
-    
-    print(f"\nConfiguration:")
-    print(f"  Batch size: {args.batch}")
-    print(f"  Sequence length: {args.seq}")
-    print(f"  Hidden dimension: {args.hidden}")
-    print(f"  Q heads: {args.q_heads}, KV heads: {args.kv_heads}")
-    print(f"  Head dimension: {args.head_dim}")
-    
-    # Measure actual performance if requested
-    measured_bw = None
-    measured_compute = None
-    if args.measure:
-        print("\nMeasuring actual hardware performance...")
-        print("  Benchmarking memory bandwidth...")
-        measured_bw = benchmark_memory_bandwidth()
-        print(f"    -> {measured_bw:.1f} GB/s")
-        
-        print("  Benchmarking FP16 compute...")
-        measured_compute = benchmark_compute_throughput()
-        print(f"    -> {measured_compute:.1f} TFLOPS")
-    
-    # Analyze attention operations
-    analyses = analyze_full_attention(
-        args.batch, args.seq, args.hidden,
-        args.q_heads, args.kv_heads, args.head_dim
+    parser.add_argument(
+        "--output",
+        type=str,
+        default="/root/proj/qkv_fusion/benchmarks_and_tests/results_roofline/roofline_analysis.txt",
+        help="Optional path to write the full report to (text). Still prints to console.",
     )
-    
-    # Print analysis
-    print_roofline_analysis(gpu, analyses, measured_bw, measured_compute)
-    
-    # Also analyze QKV projection specifically (the focus of this project)
-    print("\n" + "=" * 80)
-    print("QKV PROJECTION SPECIFIC ANALYSIS")
-    print("=" * 80)
-    
-    qkv_analysis = analyses['qkv_proj']
-    print(f"\nThis is your optimization target:")
-    print(f"  Operation: {qkv_analysis.name}")
-    print(f"  FLOPs: {qkv_analysis.flops / 1e9:.2f} GFLOP")
-    print(f"  Arithmetic Intensity: {qkv_analysis.arithmetic_intensity:.2f} FLOPs/Byte")
-    
-    # Calculate expected times
-    theory_time_us = qkv_analysis.theoretical_time_ms(gpu) * 1000
-    
-    print(f"\n  Theoretical bounds:")
-    print(f"    - Memory-bound time: {qkv_analysis.total_bytes / (gpu.memory_bandwidth_gbps * 1e6):.2f} µs")
-    print(f"    - Compute-bound time: {qkv_analysis.flops / (gpu.peak_fp16_tflops * 1e9):.2f} µs")
-    print(f"    - Expected min time: {theory_time_us:.2f} µs")
-    
-    # Compare with baseline
-    baseline_ms = 0.073  # From your benchmark results
-    baseline_us = baseline_ms * 1000
-    achieved_efficiency = theory_time_us / baseline_us * 100
-    
-    print(f"\n  Your baseline (PyTorch 3x nn.Linear): {baseline_us:.1f} µs")
-    print(f"  Theoretical efficiency: {achieved_efficiency:.1f}%")
-    
-    if achieved_efficiency < 50:
-        print(f"\n  ⚠️  There's {100-achieved_efficiency:.0f}% room for improvement!")
-        print(f"     But this doesn't mean you can achieve it with custom kernels.")
-        print(f"     PyTorch uses highly optimized cuBLASLt with epilogue fusion.")
-    else:
-        print(f"\n  ✓ PyTorch is already achieving {achieved_efficiency:.0f}% of theoretical peak.")
-        print(f"    Custom kernels may not provide significant speedup.")
-    
-    print("\n" + "=" * 80)
+    args = parser.parse_args()
+
+    report_path: Optional[Path] = Path(args.output).expanduser() if args.output else None
+    if report_path is not None:
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with contextlib.ExitStack() as stack:
+        report_fh = None
+        if report_path is not None:
+            report_fh = stack.enter_context(report_path.open("w", encoding="utf-8"))
+            tee = _TeeIO(sys.stdout, report_fh)
+            stack.enter_context(contextlib.redirect_stdout(tee))
+
+            # Add a tiny header to the file (and console) for provenance.
+            ts = _dt.datetime.now().isoformat(timespec="seconds")
+            print(f"[roofline_analysis] timestamp={ts}")
+            print(f"[roofline_analysis] argv={' '.join(sys.argv)}")
+            print()
+
+        print("=" * 80)
+        print("QKV Fusion Project - Roofline Model Analysis")
+        print("=" * 80)
+
+        # Detect or set GPU
+        if args.gpu and args.gpu.upper() in GPU_SPECS:
+            gpu = GPU_SPECS[args.gpu.upper()]
+            print(f"Using specified GPU: {gpu.name}")
+        else:
+            gpu = detect_gpu()
+
+        print(f"\nConfiguration:")
+        print(f"  Batch size: {args.batch}")
+        print(f"  Sequence length: {args.seq}")
+        print(f"  Hidden dimension: {args.hidden}")
+        print(f"  Q heads: {args.q_heads}, KV heads: {args.kv_heads}")
+        print(f"  Head dimension: {args.head_dim}")
+
+        # Measure actual performance if requested
+        measured_bw = None
+        measured_compute = None
+        if args.measure:
+            print("\nMeasuring actual hardware performance...")
+            print("  Benchmarking memory bandwidth...")
+            measured_bw = benchmark_memory_bandwidth()
+            print(f"    -> {measured_bw:.1f} GB/s")
+
+            print("  Benchmarking FP16 compute...")
+            measured_compute = benchmark_compute_throughput()
+            print(f"    -> {measured_compute:.1f} TFLOPS")
+
+        # Analyze attention operations
+        analyses = analyze_full_attention(
+            args.batch, args.seq, args.hidden,
+            args.q_heads, args.kv_heads, args.head_dim
+        )
+
+        # Print analysis
+        print_roofline_analysis(gpu, analyses, measured_bw, measured_compute)
+
+        # Also analyze QKV projection specifically (the focus of this project)
+        print("\n" + "=" * 80)
+        print("QKV PROJECTION SPECIFIC ANALYSIS")
+        print("=" * 80)
+
+        qkv_analysis = analyses['qkv_proj']
+        print(f"\nThis is your optimization target:")
+        print(f"  Operation: {qkv_analysis.name}")
+        print(f"  FLOPs: {qkv_analysis.flops / 1e9:.2f} GFLOP")
+        print(f"  Arithmetic Intensity: {qkv_analysis.arithmetic_intensity:.2f} FLOPs/Byte")
+
+        # Calculate expected times
+        theory_time_us = qkv_analysis.theoretical_time_ms(gpu) * 1000
+
+        print(f"\n  Theoretical bounds:")
+        print(f"    - Memory-bound time: {qkv_analysis.total_bytes / (gpu.memory_bandwidth_gbps * 1e6):.2f} µs")
+        print(f"    - Compute-bound time: {qkv_analysis.flops / (gpu.peak_fp16_tflops * 1e9):.2f} µs")
+        print(f"    - Expected min time: {theory_time_us:.2f} µs")
+
+        # Compare with baseline
+        baseline_ms = 0.073  # From your benchmark results
+        baseline_us = baseline_ms * 1000
+        achieved_efficiency = theory_time_us / baseline_us * 100
+
+        print(f"\n  Your baseline (PyTorch 3x nn.Linear): {baseline_us:.1f} µs")
+        print(f"  Theoretical efficiency: {achieved_efficiency:.1f}%")
+
+        if achieved_efficiency < 50:
+            print(f"\n  ⚠️  There's {100-achieved_efficiency:.0f}% room for improvement!")
+            print(f"     But this doesn't mean you can achieve it with custom kernels.")
+            print(f"     PyTorch uses highly optimized cuBLASLt with epilogue fusion.")
+        else:
+            print(f"\n  ✓ PyTorch is already achieving {achieved_efficiency:.0f}% of theoretical peak.")
+            print(f"    Custom kernels may not provide significant speedup.")
+
+        print("\n" + "=" * 80)
+
+    if report_path is not None:
+        print(f"\nWrote report to: {report_path}")
 
 
 if __name__ == "__main__":

@@ -357,8 +357,13 @@ def benchmark_prefill(
     input_ids = inputs["input_ids"].to(device)
     attention_mask = inputs["attention_mask"].to(device)
     
+    # Apply batch size
+    if config.batch_size > 1:
+        input_ids = input_ids.repeat(config.batch_size, 1)
+        attention_mask = attention_mask.repeat(config.batch_size, 1)
+    
     actual_seq_len = input_ids.shape[1]
-    print(f"Input shape: {input_ids.shape}")
+    print(f"Input shape: {input_ids.shape} (batch_size={config.batch_size})")
     print(f"Actual sequence length: {actual_seq_len}")
     
     # Warmup
@@ -382,21 +387,24 @@ def benchmark_prefill(
     
     times = np.array(times)
     
+    total_tokens = actual_seq_len * config.batch_size
     result = {
         "name": "prefill",
+        "batch_size": config.batch_size,
         "seq_len": actual_seq_len,
+        "total_tokens": total_tokens,
         "mean_ms": float(np.mean(times)),
         "std_ms": float(np.std(times)),
         "min_ms": float(np.min(times)),
         "max_ms": float(np.max(times)),
         "samples": times.tolist(),
-        "tokens_per_second": actual_seq_len / (np.mean(times) / 1000),
+        "tokens_per_second": total_tokens / (np.mean(times) / 1000),
     }
     
-    print(f"\nPrefill Results:")
+    print(f"\nPrefill Results (batch_size={config.batch_size}):")
     print(f"  Latency: {result['mean_ms']:.2f} ± {result['std_ms']:.2f} ms")
     print(f"  Throughput: {result['tokens_per_second']:.0f} tokens/sec")
-    print(f"  Per-token: {result['mean_ms']/actual_seq_len*1000:.2f} µs/token")
+    print(f"  Per-token: {result['mean_ms']/total_tokens*1000:.2f} µs/token")
     
     return result
 
@@ -437,7 +445,13 @@ def measure_decode_ms_per_tok(
     attention_mask = inputs["attention_mask"].to(device)
     prompt_len = input_ids.shape[1]
     
+    # Apply batch size
+    if config.batch_size > 1:
+        input_ids = input_ids.repeat(config.batch_size, 1)
+        attention_mask = attention_mask.repeat(config.batch_size, 1)
+    
     print(f"Prompt length: {prompt_len} tokens")
+    print(f"Batch size: {config.batch_size}")
     print(f"Decoding: {config.gen_len} tokens")
     print(f"Warmup steps: {warmup}")
     
@@ -477,13 +491,19 @@ def measure_decode_ms_per_tok(
     total_time_ms = float(np.sum(times_ms))
     tokens_per_second = 1000.0 / per_token_ms if per_token_ms > 0 else 0
     
+    # Total tokens generated across all batches
+    total_tokens_per_step = config.batch_size
+    effective_tokens_per_second = total_tokens_per_step * 1000.0 / per_token_ms if per_token_ms > 0 else 0
+    
     result = {
         "name": "decode",
+        "batch_size": config.batch_size,
         "gen_len": config.gen_len,
-        "actual_tokens_generated": float(config.gen_len),
+        "actual_tokens_generated": float(config.gen_len * config.batch_size),
         "total_time_ms": total_time_ms,
         "per_token_ms": per_token_ms,
-        "tokens_per_second": tokens_per_second,
+        "per_token_per_batch_ms": per_token_ms / config.batch_size,
+        "tokens_per_second": effective_tokens_per_second,
         "std_ms": float(np.std(times_ms)),
         "min_ms": float(np.min(times_ms)),
         "max_ms": float(np.max(times_ms)),
@@ -493,8 +513,10 @@ def measure_decode_ms_per_tok(
         "warmup_steps": warmup,
     }
     
-    print(f"\nDecode Results:")
-    print(f"  Per-token latency: {result['per_token_ms']:.3f} ± {result['std_ms']:.3f} ms")
+    print(f"\nDecode Results (batch_size={config.batch_size}):")
+    print(f"  Per-step latency: {result['per_token_ms']:.3f} ± {result['std_ms']:.3f} ms")
+    if config.batch_size > 1:
+        print(f"  Per-token (amortized): {result['per_token_per_batch_ms']:.3f} ms")
     print(f"  Min/Max: {result['min_ms']:.3f} / {result['max_ms']:.3f} ms")
     print(f"  Throughput: {result['tokens_per_second']:.1f} tokens/sec")
     print(f"  Total decode time: {result['total_time_ms']:.2f} ms")
@@ -536,7 +558,12 @@ def benchmark_generation(
     input_ids = inputs["input_ids"].to(device)
     prompt_len = input_ids.shape[1]
     
+    # Apply batch size
+    if config.batch_size > 1:
+        input_ids = input_ids.repeat(config.batch_size, 1)
+    
     print(f"Prompt length: {prompt_len} tokens")
+    print(f"Batch size: {config.batch_size}")
     print(f"Generating: {config.gen_len} tokens")
     
     # Generation parameters based on thinking mode
@@ -616,21 +643,29 @@ def benchmark_generation(
     avg_time = np.mean(times)
     per_token_ms = avg_time / avg_tokens if avg_tokens > 0 else 0
     
+    # Account for batch size in throughput
+    total_tokens_generated = avg_tokens * config.batch_size
+    
     result = {
         "name": "generation",
+        "batch_size": config.batch_size,
         "gen_len": config.gen_len,
         "actual_tokens_generated": float(np.mean(tokens_generated)),
+        "total_tokens_generated": float(total_tokens_generated),
         "total_time_ms": float(avg_time),
         "per_token_ms": per_token_ms,
-        "tokens_per_second": avg_tokens / (avg_time / 1000) if avg_time > 0 else 0,
+        "per_token_per_batch_ms": per_token_ms / config.batch_size if config.batch_size > 0 else 0,
+        "tokens_per_second": total_tokens_generated / (avg_time / 1000) if avg_time > 0 else 0,
         "std_ms": float(np.std(times)),
         "samples": times.tolist(),
         "enable_thinking": config.enable_thinking,
     }
     
-    print(f"\nGeneration Results:")
+    print(f"\nGeneration Results (batch_size={config.batch_size}):")
     print(f"  Total time: {result['total_time_ms']:.2f} ± {result['std_ms']:.2f} ms")
     print(f"  Per-token latency: {result['per_token_ms']:.2f} ms/token")
+    if config.batch_size > 1:
+        print(f"  Per-token (amortized): {result['per_token_per_batch_ms']:.2f} ms/token")
     print(f"  Throughput: {result['tokens_per_second']:.1f} tokens/sec")
     
     return result
@@ -673,6 +708,13 @@ def benchmark_layer_breakdown(
     )
     input_ids = inputs["input_ids"].to(device)
     attention_mask = inputs["attention_mask"].to(device)
+    
+    # Apply batch size
+    if config.batch_size > 1:
+        input_ids = input_ids.repeat(config.batch_size, 1)
+        attention_mask = attention_mask.repeat(config.batch_size, 1)
+    
+    print(f"Input shape: {input_ids.shape} (batch_size={config.batch_size})")
     
     # Profile
     results = profile_attention_layers(model, attention_modules, input_ids, attention_mask, config)
@@ -869,21 +911,30 @@ def print_summary(
     print(f"  Layers: {config.num_layers}")
     if config.num_experts > 0:
         print(f"  MoE: {config.num_experts} experts, {config.num_activated_experts} activated per token")
+    print(f"  Batch size: {config.batch_size}")
     print(f"  Sequence length: {config.seq_len}")
     print(f"  Generation length: {config.gen_len}")
     
     print(f"\n{'Prefill Performance':-^60}")
     if prefill_result:
+        batch_size = prefill_result.get('batch_size', 1)
+        total_tokens = prefill_result.get('total_tokens', prefill_result['seq_len'])
+        print(f"  Batch size: {batch_size}")
         print(f"  Latency: {prefill_result['mean_ms']:.2f} ± {prefill_result['std_ms']:.2f} ms")
         print(f"  Throughput: {prefill_result['tokens_per_second']:.0f} tokens/sec")
-        print(f"  Per-token: {prefill_result['mean_ms']/prefill_result['seq_len']*1000:.2f} µs/token")
+        print(f"  Per-token: {prefill_result['mean_ms']/total_tokens*1000:.2f} µs/token")
     
     print(f"\n{'Generation Performance (Per-Token Latency)':-^60}")
     if gen_result:
+        batch_size = gen_result.get('batch_size', 1)
         thinking_status = "ENABLED" if gen_result.get('enable_thinking', False) else "DISABLED"
+        print(f"  Batch size: {batch_size}")
         print(f"  Thinking mode: {thinking_status}")
-        print(f"  Total time ({gen_result['actual_tokens_generated']:.0f} tokens): {gen_result['total_time_ms']:.2f} ms")
+        total_tokens = gen_result.get('total_tokens_generated', gen_result['actual_tokens_generated'])
+        print(f"  Total time ({total_tokens:.0f} tokens): {gen_result['total_time_ms']:.2f} ms")
         print(f"  Per-token latency: {gen_result['per_token_ms']:.2f} ms/token")
+        if batch_size > 1:
+            print(f"  Per-token (amortized): {gen_result.get('per_token_per_batch_ms', gen_result['per_token_ms']):.2f} ms/token")
         print(f"  Throughput: {gen_result['tokens_per_second']:.1f} tokens/sec")
     
     print(f"\n{'Attention Layer Breakdown':-^60}")
@@ -1088,4 +1139,5 @@ python /root/proj/qkv_fusion/benchmarks_and_tests/benchmark_qwen3_baseline.py --
 python /root/proj/qkv_fusion/benchmarks_and_tests/benchmark_qwen3_baseline.py \
     --output /root/proj/qkv_fusion/benchmarks_and_tests/results_qwen3_bench \
         --model-path /root/autodl-tmp/checkpoints/Qwen3-30B-A3B-GPTQ-Int4 \
+            --seq 1024 --gen-len 128 \
 """
